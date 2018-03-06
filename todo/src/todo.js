@@ -7,24 +7,22 @@ class Todo extends Component {
     constructor() {
         super();
         this.state = {
-            todoList: [{
-                text: "test123",
-                id: 1,
-                status: false
-            }]
+            todoList: []
         }
     }
 
     addTodo(text) {
-
+        
         var todoItem = {
             text: text,
-            id: this.state.todoList.length,
+            id: this.state.todoList.length - 1,
             status: false
         };
 
+        this.state.todoList.push(todoItem);
+
         this.setState({
-            todoList: this.state.todoList.push(todoItem)
+            todoList: this.state.todoList
         });
     }
 
@@ -43,8 +41,7 @@ class Todo extends Component {
     render() {
         return (
             <div>
-                {/* <TodoCreate addTodo={this.addTodo(text).bind(this)} /> */}
-                <TodoCreate />
+                <TodoCreate addTodo={this.addTodo.bind(this)} />
                 <TodoList todoList={this.state.todoList} />
                 {/* <TodoFilter todoList={this.state.todoList} updateTodo={this.updateTodo(todoItem).bind(this)} /> */}
                 <TodoFilter todoList={this.state.todoList} />
