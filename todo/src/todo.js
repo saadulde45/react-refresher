@@ -21,14 +21,11 @@ class Todo extends Component {
             updatedFilteredList = updatedTodoList;
         } else {
             updatedFilteredList = updatedTodoList.filter(item => {
-                console.log("in", item.status, this.state.selectedFilter);
                 if(item.status === this.state.selectedFilter) {
                     return item;
                 }
             });
         }
-
-        console.log("check", this.state.selectedFilter, updatedTodoList, updatedFilteredList);
 
         this.setState({
             todoList: updatedTodoList,
@@ -64,20 +61,18 @@ class Todo extends Component {
     updateFilter(filter) {
 
         this.setState({
-            selectedFilter: true
+            selectedFilter: filter
+        }, () => {
+            this.updateFilteredList(this.state.todoList);
         });
-
-        console.log("filter setting", this.state, filter);
-
-        this.updateFilteredList(this.state.todoList);
     } 
 
     render() {
         return (
             <div>
                 <TodoCreate addTodo={this.addTodo.bind(this)} />
-                <TodoList todoList={this.state.todoList} updateTodo={this.updateTodo.bind(this)} />
-                <TodoFilter todoList={this.state.todoList} updateFilter={this.updateFilter.bind(this)}/>
+                <TodoList todoList={this.state.filteredList} updateTodo={this.updateTodo.bind(this)} />
+                <TodoFilter todoList={this.state.filteredList} updateFilter={this.updateFilter.bind(this)}/>
             </div>
         );
     }
