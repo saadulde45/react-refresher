@@ -67,6 +67,11 @@ class Todo extends Component {
         });
     } 
 
+    // Caused a recursive loop
+    // componentDidUpdate(previousState, nextState) {
+    //     this.updateFilteredList(this.state.todoList);
+    // }
+
     render() {
         return (
             <div>
