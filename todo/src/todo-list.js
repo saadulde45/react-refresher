@@ -1,17 +1,20 @@
-import React, {Component} from 'react';
+import React from 'react';
 
 const TodoList = (props) => {
-    console.log(props);
+
     return (
-        <div>
-            <ul>
-                {
-                    props.todoList.map(item => {
-                        return <li key={item.id}> {item.text} </li>;
-                    })
-                }
-            </ul>
-        </div>
+        <ul>
+            {
+                props.todoList.map(item => {
+                    return (
+                        <li key={item.id} onClick={() => {props.updateTodo(item)}}>
+                            <input type="checkbox" checked={item.status} /> 
+                            <span> {item.text} </span>
+                        </li>
+                    );
+                })
+            }
+        </ul>
     );
 }
 

@@ -15,7 +15,7 @@ class Todo extends Component {
         
         var todoItem = {
             text: text,
-            id: this.state.todoList.length - 1,
+            id: this.state.todoList.length,
             status: false
         };
 
@@ -27,12 +27,14 @@ class Todo extends Component {
     }
 
     updateTodo(updatedTodoItem) {
+
         var updatedTodoList = this.state.todoList.map(todoItem => {
             if(todoItem.id === updatedTodoItem.id) {
                 todoItem.status = true;
             }
             return todoItem;
         });
+
         this.setState({
             todoList: updatedTodoList
         });
@@ -42,8 +44,7 @@ class Todo extends Component {
         return (
             <div>
                 <TodoCreate addTodo={this.addTodo.bind(this)} />
-                <TodoList todoList={this.state.todoList} />
-                {/* <TodoFilter todoList={this.state.todoList} updateTodo={this.updateTodo(todoItem).bind(this)} /> */}
+                <TodoList todoList={this.state.todoList} updateTodo={this.updateTodo.bind(this)} />
                 <TodoFilter todoList={this.state.todoList} />
             </div>
         );
