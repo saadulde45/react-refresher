@@ -1,0 +1,20 @@
+.addTodo {
+    width: 300px;
+}
+
+li {
+    list-style-type: none;
+}
+
+li input, li span {
+    cursor: pointer;
+}
+
+li .completed {
+    text-decoration: line-through;
+}
+
+.filters span {
+    padding: 0 10px;
+    cursor: pointer;
+}

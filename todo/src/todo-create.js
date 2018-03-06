@@ -10,7 +10,7 @@ const TodoCreate = (props) => {
     
     return (
         <div>
-            <input type="text" placeholder="What needs to be done?" onKeyPress={addTodo} />
+            <input className="addTodo" type="text" placeholder="What needs to be done?" onKeyPress={addTodo} />
         </div>
     );
 };

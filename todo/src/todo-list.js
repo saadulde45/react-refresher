@@ -1,4 +1,5 @@
 import React from 'react';
+import './App.css';
 
 const TodoList = (props) => {
 
@@ -9,7 +10,7 @@ const TodoList = (props) => {
                     return (
                         <li key={item.id} onClick={() => {props.updateTodo(item)}}>
                             <input type="checkbox" checked={item.status} /> 
-                            <span> {item.text} </span>
+                            <span className={ item.status ? "completed" : ""} > {item.text} </span>
                         </li>
                     );
                 })

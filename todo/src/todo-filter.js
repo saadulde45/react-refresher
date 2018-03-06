@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
+import './App.css';
 
 const TodoFilter = (props) => {
 
     return (
-        <div>
+        <div className="filters">
             <span>Count : {props.todoList.length} items left</span>
             <span onClick={() => {
                 props.updateFilter(null)
