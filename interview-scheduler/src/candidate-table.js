@@ -36,7 +36,7 @@ class CandidateTable extends Component {
                         }
                     case "status":
                         if (rowData.l1Details.score !== null) {
-                            console.log("test", rowData.l1Details.score);
+                            
                             if (rowData.l1Details.score >= 3) {
 
                                 var start = new moment(rowData.l1Details.startTime);
