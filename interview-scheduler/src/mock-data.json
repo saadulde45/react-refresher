@@ -1,57 +1,59 @@
-"totalRecords": 50,
-"handler": "Sunayana",
-"language": "en_US",
-"location": "Pune",
-"recordsPerPage": 10,
-"data": [
-  {
-    "name": "ABC",
-    "resumeLink": "https://docs.google.com/spreadsheets/d/1vIVhF90yya4XFKEMu1EMyKnSScbe-qus8F1-Tub0awE/edit#gid=0",
-    "emailId": "abc@gmail.com",
-    "experience": 4.5,
-    "testDetails": {
-      "startTime": "2018-03-16 11:50:00",
-      "endTime": "2018-03-16 12:50:00",
-      "score": 3
+{
+  "totalRecords": 50,
+  "handler": "Sunayana",
+  "language": "en_US",
+  "location": "Pune",
+  "recordsPerPage": 10,
+  "data": [
+    {
+      "name": "ABC",
+      "resumeLink": "https://docs.google.com/spreadsheets/d/1vIVhF90yya4XFKEMu1EMyKnSScbe-qus8F1-Tub0awE/edit#gid=0",
+      "emailId": "abc@gmail.com",
+      "experience": 4.5,
+      "testDetails": {
+        "startTime": "2018-03-16 11:50:00",
+        "endTime": "2018-03-16 12:50:00",
+        "score": 3
+      },
+      "l1Details": {
+        "startTime": "2018-03-16 11:50:00",
+        "endTime": "2018-03-16 12:50:00",
+        "score": 3
+      },
+      "gkDetails": {
+        "startTime": "2018-03-16 11:50:00",
+        "endTime": "",
+        "score": 3
+      },
+      "finalResult": {
+        "status": "Test Rejects",
+        "seniority": "SR"
+      }
     },
-    "l1Details": {
-      "startTime": "2018-03-16 11:50:00",
-      "endTime": "2018-03-16 12:50:00",
-      "score": 3
-    },
-    "gkDetails": {
-      "startTime": "2018-03-16 11:50:00",
-      "endTime": "",
-      "score": 3
-    },
-    "finalResult": {
-      "status": "Test Rejects",
-      "seniority": "SR"
+    {
+      "name": "CDE",
+      "resumeLink": "https://docs.google.com/spreadsheets/d/1vIVhF90yya4XFKEMu1EMyKnSScbe-qus8F1-Tub0awE/edit#gid=0",
+      "emailId": "cde@gmail.com",
+      "experience": 4,
+      "testDetails": {
+        "startTime": "2018-03-16 11:50:00",
+        "endTime": "2018-03-16 12:50:00",
+        "score": 3
+      },
+      "l1Details": {
+        "startTime": "2018-03-16 11:50:00",
+        "endTime": "2018-03-16 12:50:00",
+        "score": 3
+      },
+      "gkDetails": {
+        "startTime": "2018-03-16 11:50:00",
+        "endTime": "",
+        "score": 3
+      },
+      "finalResult": {
+        "status": "Test Rejects",
+        "seniority": "SR"
+      }
     }
-  },
-  {
-    "name": "CDE",
-    "resumeLink": "https://docs.google.com/spreadsheets/d/1vIVhF90yya4XFKEMu1EMyKnSScbe-qus8F1-Tub0awE/edit#gid=0",
-    "emailId": "cde@gmail.com",
-    "experience": 4,
-    "testDetails": {
-      "startTime": "2018-03-16 11:50:00",
-      "endTime": "2018-03-16 12:50:00",
-      "score": 3
-    },
-    "l1Details": {
-      "startTime": "2018-03-16 11:50:00",
-      "endTime": "2018-03-16 12:50:00",
-      "score": 3
-    },
-    "gkDetails": {
-      "startTime": "2018-03-16 11:50:00",
-      "endTime": "",
-      "score": 3
-    },
-    "finalResult": {
-      "status": "Test Rejects",
-      "seniority": "SR"
-    }
-  }
-]
+  ]
+}
