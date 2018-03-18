@@ -10,6 +10,60 @@ class CandidateTable extends Component {
 
     render() {
 
+        const columnFormatter = (cell, rowData, rowIdx, extraFormatData) => {
+
+            if (extraFormatData.columnType === "testDetails") {
+                if (rowData.testDetails.score < 3) {
+                    return "Rejected";
+                } else {
+                    return "Selected";
+                }
+            }
+
+            if (extraFormatData.columnType === "l1Details") {
+                switch (extraFormatData.columnField) {
+                    case "score":
+                        if (rowData.testDetails.score >= 3) {
+                            if (rowData.l1Details.score !== null) {
+                                return rowData.l1Details.score;
+                            } else {
+                                return (
+                                    <button>Schedule L1</button>
+                                );
+                            }
+                        } else {
+                            return "NA";
+                        }
+                    case "status":
+                        if (rowData.l1Details.score !== null) {
+                            console.log("test", rowData.l1Details.score);
+                            if (rowData.l1Details.score >= 3) {
+
+                                var start = new moment(rowData.l1Details.startTime);
+                                var end = new moment();
+
+                                if(rowData.l1Details.endTime !== null && rowData.l1Details.endTime.length !== 0) {
+                                    end = new moment(rowData.l1Details.endTime);
+                                }
+                                var duration = moment.duration(end.diff(start));
+
+                                return (
+                                    <span>
+                                        Selected {duration.asMinutes()} mins
+                                    </span>
+                                );
+                            } else {
+                                return "Rejected";
+                            }
+                        } else {
+                            return "NA";
+                        }
+                    default: break;
+                }
+
+            }
+        };
+
         const columns = [{
             dataField: 'name',
             text: 'Name'
@@ -21,17 +75,58 @@ class CandidateTable extends Component {
             text: 'Test Score'
         }, {
             dataField: 'testDetails.startTime',
-            text: 'Test Start',
+            text: 'Test Status',
             editable: (content, row, rowIndex, columnIndex) => {
                 return row.testDetails.score > 3;
             },
-            formatter: (cell, row) => {
-
-                if (row.testDetails.score < 3) {
-                    return "Rejected";
-                } else {
-                    return "Selected";
-                }
+            formatter: columnFormatter,
+            formatExtraData: {
+                "columnType": "testDetails",
+                "columnField": "status"
+            }
+        }, {
+            dataField: 'l1Details.score',
+            text: 'L1 Score',
+            editable: (content, row, rowIndex, columnIndex) => {
+                return row.testDetails.score > 3;
+            },
+            formatter: columnFormatter,
+            formatExtraData: {
+                "columnType": "l1Details",
+                "columnField": "score"
+            }
+        }, {
+            dataField: 'l1Details.startTime',
+            text: 'L1 Status',
+            editable: (content, row, rowIndex, columnIndex) => {
+                return row.l1Details.score !== "NA" && row.l1Details.score > 3;
+            },
+            formatter: columnFormatter,
+            formatExtraData: {
+                "columnType": "l1Details",
+                "columnField": "status"
+            }
+        }, {
+            dataField: 'gkDetails.score',
+            text: 'GK Score',
+            editable: (content, row, rowIndex, columnIndex) => {
+                return row.l1Details.score !== "NA" && row.l1Details.score > 3;
+            },
+            formatter: columnFormatter,
+            formatExtraData: {
+                "columnType": "gkDetails",
+                "columnField": "score"
+            }
+        }, {
+            dataField: 'gkDetails.startTime',
+            text: 'GK Status',
+            editable: (content, row, rowIndex, columnIndex) => {
+                return row.gkDetails.score !== "NA" && row.gkDetails.score > 3;
+            },
+            formatter: columnFormatter,
+            formatExtraData: {
+                "columnType": "gkDetails",
+                "columnField": "status"
             }
         }];
 
