@@ -62,8 +62,62 @@ class CandidateTable extends Component {
                 }
 
             }
-        };
+    
+            if (extraFormatData.columnType === "gkDetails") {
+                switch (extraFormatData.columnField) {
+                    case "score":
+                        if (rowData.testDetails.score >= 3) {
+                            if (rowData.l1Details.score >= 3) {
+                                if (rowData.gkDetails.score !== null) {
+                                    return rowData.gkDetails.score;
+                                } else {
+                                    return (
+                                        <button>Schedule L1</button>
+                                    );
+                                  }
+                                }
+                        } else {
+                            return "NA";
+                        }
+                    break;    
+                    case "status":
+                        if (rowData.gkDetails.score !== null) {
+                            
+                            if (rowData.gkDetails.score >= 3) {
 
+                                var start = new moment(rowData.gkDetails.startTime);
+                                var end = new moment();
+
+                                if(rowData.gkDetails.endTime !== null && rowData.gkDetails.endTime.length !== 0) {
+                                    end = new moment(rowData.gkDetails.endTime);
+                                }
+                                var duration = moment.duration(end.diff(start));
+
+                                return (
+                                    <span>
+                                        Selected {duration.asMinutes()} mins
+                                    </span>
+                                );
+                            } else {
+                                return "Rejected";
+                            }
+                        } else {
+                            return "NA";
+                        }
+                    default: break;
+                }
+
+            }
+        };
+        function updateCellBackground(cellValue) {
+            if (cellValue === null || cellValue < 3) {
+                return '#FA8072'
+            } else if(cellValue >= 3 && cellValue <= 5) {
+                return '#ADFF2F'
+            } else {
+                return '#FF7F50'
+            }
+        }
         const columns = [{
             dataField: 'name',
             text: 'Name'
@@ -72,10 +126,20 @@ class CandidateTable extends Component {
             text: 'Experience'
         }, {
             dataField: 'testDetails.score',
-            text: 'Test Score'
+            text: 'Test Score',
+            style: (content, rowData, rowIndex, colIndex) => {
+                return {
+                backgroundColor: updateCellBackground(content)
+                };
+            }            
         }, {
             dataField: 'testDetails.startTime',
             text: 'Test Status',
+            style: (content, rowData, rowIndex, colIndex) => {
+                return {    
+                backgroundColor: updateCellBackground(rowData.testDetails.score)
+                };
+            },
             editable: (content, row, rowIndex, columnIndex) => {
                 return row.testDetails.score > 3;
             },
@@ -87,6 +151,11 @@ class CandidateTable extends Component {
         }, {
             dataField: 'l1Details.score',
             text: 'L1 Score',
+            style: (content, rowData, rowIndex, colIndex) => {
+                return {    
+                backgroundColor: updateCellBackground(rowData.l1Details.score)
+                };
+            },
             editable: (content, row, rowIndex, columnIndex) => {
                 return row.testDetails.score > 3;
             },
@@ -98,6 +167,11 @@ class CandidateTable extends Component {
         }, {
             dataField: 'l1Details.startTime',
             text: 'L1 Status',
+            style: (content, rowData, rowIndex, colIndex) => {
+                return {    
+                backgroundColor: updateCellBackground(rowData.l1Details.score)
+                };
+            },
             editable: (content, row, rowIndex, columnIndex) => {
                 return row.l1Details.score !== "NA" && row.l1Details.score > 3;
             },
@@ -109,6 +183,11 @@ class CandidateTable extends Component {
         }, {
             dataField: 'gkDetails.score',
             text: 'GK Score',
+            style: (content, rowData, rowIndex, colIndex) => {
+                return {    
+                backgroundColor: updateCellBackground(rowData.gkDetails.score)
+                };
+            },
             editable: (content, row, rowIndex, columnIndex) => {
                 return row.l1Details.score !== "NA" && row.l1Details.score > 3;
             },
@@ -120,6 +199,11 @@ class CandidateTable extends Component {
         }, {
             dataField: 'gkDetails.startTime',
             text: 'GK Status',
+            style: (content, rowData, rowIndex, colIndex) => {
+                return {    
+                backgroundColor: updateCellBackground(rowData.gkDetails.score)
+                };
+            },
             editable: (content, row, rowIndex, columnIndex) => {
                 return row.gkDetails.score !== "NA" && row.gkDetails.score > 3;
             },
