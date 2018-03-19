@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import './App.css';
+import './App.scss';
+import CandidateTable from './candidate-table';
 
 class App extends Component {
   render() {
     return (
       <div>
-        Strip down code
+        <CandidateTable />
       </div>
     );
   }
