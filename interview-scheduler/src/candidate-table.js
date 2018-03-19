@@ -35,7 +35,7 @@ class CandidateTable extends Component {
                             return "NA";
                         }
                     case "status":
-                        if (rowData.l1Details.score !== null) {
+                        if (rowData.testDetails.score >= 3 && rowData.l1Details.score !== null) {
                             
                             if (rowData.l1Details.score >= 3) {
 
@@ -66,8 +66,7 @@ class CandidateTable extends Component {
             if (extraFormatData.columnType === "gkDetails") {
                 switch (extraFormatData.columnField) {
                     case "score":
-                        if (rowData.testDetails.score >= 3) {
-                            if (rowData.l1Details.score >= 3) {
+                        if (rowData.testDetails.score >= 3 && rowData.l1Details.score >= 3) {
                                 if (rowData.gkDetails.score !== null) {
                                     return rowData.gkDetails.score;
                                 } else {
@@ -75,35 +74,36 @@ class CandidateTable extends Component {
                                         <button>Schedule L1</button>
                                     );
                                   }
-                                }
                         } else {
                             return "NA";
                         }
-                    break;    
                     case "status":
-                        if (rowData.gkDetails.score !== null) {
-                            
-                            if (rowData.gkDetails.score >= 3) {
+                        if (rowData.testDetails.score >= 3 && rowData.l1Details.score >= 3) {
+                            if (rowData.gkDetails.score !== null) {                            
+                                if (rowData.gkDetails.score >= 3) {
 
-                                var start = new moment(rowData.gkDetails.startTime);
-                                var end = new moment();
+                                    var start = new moment(rowData.gkDetails.startTime);
+                                    var end = new moment();
 
-                                if(rowData.gkDetails.endTime !== null && rowData.gkDetails.endTime.length !== 0) {
-                                    end = new moment(rowData.gkDetails.endTime);
+                                    if(rowData.gkDetails.endTime !== null && rowData.gkDetails.endTime.length !== 0) {
+                                        end = new moment(rowData.gkDetails.endTime);
+                                    }
+                                    var duration = moment.duration(end.diff(start));
+
+                                    return (
+                                        <span>
+                                            Selected {duration.asMinutes()} mins
+                                        </span>
+                                    );
+                                } else {
+                                    return "Rejected";
                                 }
-                                var duration = moment.duration(end.diff(start));
-
-                                return (
-                                    <span>
-                                        Selected {duration.asMinutes()} mins
-                                    </span>
-                                );
                             } else {
-                                return "Rejected";
+                                return "NA";
                             }
                         } else {
                             return "NA";
-                        }
+                        }   
                     default: break;
                 }
 
@@ -152,8 +152,9 @@ class CandidateTable extends Component {
             dataField: 'l1Details.score',
             text: 'L1 Score',
             style: (content, rowData, rowIndex, colIndex) => {
-                return {    
-                backgroundColor: updateCellBackground(rowData.l1Details.score)
+                let score = rowData.testDetails.score < rowData.l1Details.score ? rowData.testDetails.score :rowData.l1Details.score;        
+                return {
+                    backgroundColor: updateCellBackground(score)
                 };
             },
             editable: (content, row, rowIndex, columnIndex) => {
@@ -168,8 +169,9 @@ class CandidateTable extends Component {
             dataField: 'l1Details.startTime',
             text: 'L1 Status',
             style: (content, rowData, rowIndex, colIndex) => {
-                return {    
-                backgroundColor: updateCellBackground(rowData.l1Details.score)
+                let score = rowData.testDetails.score < rowData.l1Details.score ? rowData.testDetails.score :rowData.l1Details.score;        
+                return {
+                    backgroundColor: updateCellBackground(score)
                 };
             },
             editable: (content, row, rowIndex, columnIndex) => {
@@ -184,8 +186,11 @@ class CandidateTable extends Component {
             dataField: 'gkDetails.score',
             text: 'GK Score',
             style: (content, rowData, rowIndex, colIndex) => {
-                return {    
-                backgroundColor: updateCellBackground(rowData.gkDetails.score)
+                let score = rowData.testDetails.score < rowData.l1Details.score 
+                            ? (rowData.testDetails.score < rowData.gkDetails.score ? rowData.testDetails.score : rowData.gkDetails.score)
+                            : (rowData.l1Details.score < rowData.gkDetails.score ? rowData.l1Details.score : rowData.gkDetails.score);
+                return {
+                    backgroundColor: updateCellBackground(score)
                 };
             },
             editable: (content, row, rowIndex, columnIndex) => {
@@ -200,8 +205,11 @@ class CandidateTable extends Component {
             dataField: 'gkDetails.startTime',
             text: 'GK Status',
             style: (content, rowData, rowIndex, colIndex) => {
-                return {    
-                backgroundColor: updateCellBackground(rowData.gkDetails.score)
+                let score = rowData.testDetails.score < rowData.l1Details.score 
+                            ? (rowData.testDetails.score < rowData.gkDetails.score ? rowData.testDetails.score : rowData.gkDetails.score)
+                            : (rowData.l1Details.score < rowData.gkDetails.score ? rowData.l1Details.score : rowData.gkDetails.score);
+                return {
+                    backgroundColor: updateCellBackground(score)
                 };
             },
             editable: (content, row, rowIndex, columnIndex) => {
