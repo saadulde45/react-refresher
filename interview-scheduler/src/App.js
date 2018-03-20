@@ -163,25 +163,6 @@ class App extends Component {
 
 		this.handleTableChange = this.handleTableChange.bind(this);
 
-		handleTableChange(eventType, { cellEdit, data }) {
-
-			console.log('change', eventType, cellEdit, data);
-
-			if (eventType === 'cellEdit') {
-
-				var dataField = cellEdit.dataField.split('.');
-				var oldData = data.filter(row => {
-					return row.emailId === cellEdit.rowId
-				})[0][dataField[0]][dataField[1]];
-
-				console.log(oldData);
-
-				if (cellEdit.newValue < 3) {
-					return (false);
-				}
-			}
-		}
-
 		this.columns = [{
 			dataField: 'name',
 			text: 'Name',
@@ -276,6 +257,25 @@ class App extends Component {
 				loading: false
 			});
 		}, 2000);
+	}
+
+	handleTableChange(eventType, { cellEdit, data }) {
+
+		console.log('change', eventType, cellEdit, data);
+
+		if (eventType === 'cellEdit') {
+
+			var dataField = cellEdit.dataField.split('.');
+			var oldData = data.filter(row => {
+				return row.emailId === cellEdit.rowId
+			})[0][dataField[0]][dataField[1]];
+
+			console.log(oldData);
+
+			if (cellEdit.newValue < 3) {
+				return (false);
+			}
+		}
 	}
 
 	render() {
