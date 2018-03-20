@@ -49,7 +49,7 @@ class App extends Component {
                 return (
                   <span>
                     Selected {duration.asMinutes()} mins
-                                </span>
+                  </span>
                 );
               } else {
                 return "Rejected";
@@ -65,10 +65,12 @@ class App extends Component {
 
     this.columns = [{
       dataField: 'name',
-      text: 'Name'
+      text: 'Name',
+      editable: false
     }, {
       dataField: 'experience',
-      text: 'Experience'
+      text: 'Experience',
+      editable: false
     }, {
       dataField: 'testDetails.score',
       text: 'Test Score'
@@ -130,8 +132,16 @@ class App extends Component {
     }];
 
     this.state = {
-      data: this.props.users || []
-    }
+      data: [],
+      loading: true
+    };
+
+    setTimeout(() => {
+      this.setState({
+        data: this.props.users,
+        loading: false
+      });
+    }, 2000);
   }
 
   render() {
@@ -141,6 +151,8 @@ class App extends Component {
           columns={this.columns}
           data={this.state.data}
           keyField='emailId'
+          errorMessage={this.errorMessage}
+          loading={this.state.loading}
         />
       </div>
     );
