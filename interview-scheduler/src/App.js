@@ -90,6 +90,7 @@ class App extends Component {
 
 			}
 		};
+
 		function updateCellBackground(cellValue) {
 			if (cellValue === 0) {
 				return '#808080'
@@ -101,6 +102,7 @@ class App extends Component {
 				return '#FF7F50'
 			}
 		}
+
 		function timer(startTime, endTime) {
 			var start = new moment(startTime);
 			var end = new moment();
@@ -111,6 +113,7 @@ class App extends Component {
 			var duration = moment.duration(end.diff(start));
 			return duration.asMinutes();
 		}
+
 		const scoreValidation = (newValue, row, column) => {
 			if (isNaN(newValue) || newValue < 1 || newValue > 6) {
 				return {
@@ -155,6 +158,27 @@ class App extends Component {
 					};
 
 				default: break;
+			}
+		}
+
+		this.handleTableChange = this.handleTableChange.bind(this);
+
+		handleTableChange(eventType, { cellEdit, data }) {
+
+			console.log('change', eventType, cellEdit, data);
+
+			if (eventType === 'cellEdit') {
+
+				var dataField = cellEdit.dataField.split('.');
+				var oldData = data.filter(row => {
+					return row.emailId === cellEdit.rowId
+				})[0][dataField[0]][dataField[1]];
+
+				console.log(oldData);
+
+				if (cellEdit.newValue < 3) {
+					return (false);
+				}
 			}
 		}
 
@@ -262,6 +286,7 @@ class App extends Component {
 					data={this.state.data}
 					keyField='emailId'
 					loading={this.state.loading}
+					onTableChange={this.handleTableChange}
 				/>
 			</div>
 		);
