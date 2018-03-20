@@ -112,11 +112,14 @@ class App extends Component {
     return duration.asMinutes();
   }
   const scoreValidation = (newValue, row, column) => {
-    if(isNaN(newValue) || newValue < 1 || newValue > 6)
-    return {
-      valid: false,
-      message: 'The value should be number and in the range of 1 - 5'
-    };
+    if(isNaN(newValue) || newValue < 1 || newValue > 6) {
+      return {
+        valid: false,
+        message: 'The value should be number and in the range of 1 - 5'
+      };
+    } else {
+      return true;
+    }
   }
 
   const cellStyles =  (content, rowData, rowIndex, colIndex) => {
