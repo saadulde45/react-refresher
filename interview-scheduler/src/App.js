@@ -167,7 +167,10 @@ class App extends Component {
       dataField: 'testDetails.score',
       text: 'Test Score',
       style: cellStyles,
-      validator: scoreValidation
+      validator: scoreValidation,
+      editCellClasses: (cell, row, rowIndex, colIndex) => {
+        return (cell < 1 || cell > 5)  ? 'has-error' : 'has-success';
+      }      
     }, {
       dataField: 'testDetails.startTime',
       text: 'Test Status',
@@ -241,10 +244,10 @@ class App extends Component {
     };
 
     setTimeout(() => {
-      this.setState({
-        data: this.props.users,
-        loading: false
-      });
+    this.setState({
+      data: this.props.users,
+      loading: false
+    });
     }, 2000);
   }
 
@@ -255,7 +258,6 @@ class App extends Component {
           columns={this.columns}
           data={this.state.data}
           keyField='emailId'
-          errorMessage={this.errorMessage}
           loading={this.state.loading}
         />
       </div>
