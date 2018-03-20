@@ -149,8 +149,8 @@ class App extends Component {
     }];
 
     this.state = {
-      data: this.props.users,
-      loading: false
+      data: [],
+      loading: true
     };
 
     setTimeout(() => {
