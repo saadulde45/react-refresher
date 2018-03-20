@@ -1,5 +1,5 @@
 const getCandidates = (candidates) => ({
-    TYPE: "GET_CANDIDATES",
+    type: "GET_CANDIDATES",
     payload: candidates
 });
 

@@ -6,7 +6,8 @@ import CandidateTable from '../candidate-table/candidate-table';
 import moment from 'moment';
 
 const mapStateToProps = function (store) {
-	return { users: store.users }
+	console.log("stat store", store);
+	return { candidates: store.candidates.candidates }
 }
 
 function mapDispatchToProps(dispatch) {
@@ -17,6 +18,8 @@ class App extends Component {
 
 	constructor(props) {
 		super(props);
+
+		console.log("app props", props);
 
 		const columnFormatter = (cell, rowData, rowIdx, extraFormatData) => {
 
@@ -256,16 +259,9 @@ class App extends Component {
 		}];
 
 		this.state = {
-			data: [],
+			data: this.props.candidates,
 			loading: true
 		};
-
-		setTimeout(() => {
-			this.setState({
-				data: this.props.users,
-				loading: false
-			});
-		}, 2000);
 	}
 
 
@@ -286,6 +282,10 @@ class App extends Component {
 				data: newData
 			});
 		}
+	}
+
+	componentDidMount() {
+		this.props.getCandidates();
 	}
 
 	render() {
