@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import './App.scss';
 import { connect } from 'react-redux';
-import CandidateTable from './candidate-table';
+import CandidateTable from '../candidate-table/candidate-table';
 import moment from 'moment';
 
 class App extends Component {
