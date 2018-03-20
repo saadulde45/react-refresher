@@ -9,20 +9,19 @@ const CandidateTable = (props) => {
 
     const { columns, data, keyField, loading, onTableChange } = props;
 
-    console.log("props", props);
-
     const cellEdit = cellEditFactory({
         mode: 'dbclick'
     });
 
     return (
         <BootstrapTable
+            remote={{ cellEdit: true }}
             keyField={keyField}
             data={data}
             columns={columns}
             cellEdit={cellEdit}
             loading={loading}
-            onTableChange = { onTableChange }
+            onTableChange={onTableChange}
             noDataIndication={() => {
                 if (!loading && data.length === 0) {
                     return (<div>sorry no data </div>);

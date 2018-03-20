@@ -261,20 +261,19 @@ class App extends Component {
 
 	handleTableChange(eventType, { cellEdit, data }) {
 
-		console.log('change', eventType, cellEdit, data);
-
 		if (eventType === 'cellEdit') {
 
 			var dataField = cellEdit.dataField.split('.');
-			var oldData = data.filter(row => {
-				return row.emailId === cellEdit.rowId
-			})[0][dataField[0]][dataField[1]];
+			var newData = data.map(row => {
+				if(row.emailId === cellEdit.rowId) {
+					row[dataField[0]][dataField[1]] = cellEdit.newValue;
+				}
+				return row;
+			});
 
-			console.log(oldData);
-
-			if (cellEdit.newValue < 3) {
-				return (false);
-			}
+			this.setState({
+				data: newData
+			});
 		}
 	}
 
