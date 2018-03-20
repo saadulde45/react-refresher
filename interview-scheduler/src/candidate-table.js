@@ -22,13 +22,13 @@ const CandidateTable = (props) => {
             columns={columns}
             cellEdit={cellEdit}
             loading={loading}
-            noDataIndication={ () => {
-                    if(!loading && data.length === 0) {
-                        return (<div>sorry no data </div>);
-                    }
+            noDataIndication={() => {
+                if (!loading && data.length === 0) {
+                    return (<div>sorry no data </div>);
                 }
             }
-            overlay={ overlayFactory({ spinner: true, background: 'rgba(192,192,192,0.3)' }) }
+            }
+            overlay={overlayFactory({ spinner: true, background: 'rgba(192,192,192,0.3)' })}
         />
     );
 }
