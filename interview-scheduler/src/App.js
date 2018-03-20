@@ -37,18 +37,9 @@ class App extends Component {
                 if (rowData.testDetails.score >= 3 && rowData.l1Details.score !== null) {
                     
                     if (rowData.l1Details.score >= 3) {
-
-                        var start = new moment(rowData.l1Details.startTime);
-                        var end = new moment();
-
-                        if(rowData.l1Details.endTime !== null && rowData.l1Details.endTime.length !== 0) {
-                            end = new moment(rowData.l1Details.endTime);
-                        }
-                        var duration = moment.duration(end.diff(start));
-
                         return (
                             <span>
-                                Selected {duration.asMinutes()} mins
+                                Selected {timer(rowData.l1Details.startTime,rowData.l1Details.endTime)} mins
                             </span>
                         );
                     } else {
@@ -80,18 +71,9 @@ class App extends Component {
                   if (rowData.testDetails.score >= 3 && rowData.l1Details.score >= 3) {
                       if (rowData.gkDetails.score !== null) {                            
                           if (rowData.gkDetails.score >= 3) {
-
-                              var start = new moment(rowData.gkDetails.startTime);
-                              var end = new moment();
-
-                              if(rowData.gkDetails.endTime !== null && rowData.gkDetails.endTime.length !== 0) {
-                                  end = new moment(rowData.gkDetails.endTime);
-                              }
-                              var duration = moment.duration(end.diff(start));
-
                               return (
                                   <span>
-                                      Selected {duration.asMinutes()} mins
+                                      Selected {timer(rowData.gkDetails.startTime,rowData.gkDetails.endTime)} mins
                                   </span>
                               );
                           } else {
@@ -109,7 +91,9 @@ class App extends Component {
       }
   };
   function updateCellBackground(cellValue) {
-    if (cellValue === null || cellValue < 3) {
+    if(cellValue === 0) {
+      return '#808080'
+    } else if (cellValue === null || cellValue < 3) {
         return '#FA8072'
     } else if(cellValue >= 3 && cellValue <= 5) {
         return '#ADFF2F'
@@ -117,6 +101,59 @@ class App extends Component {
         return '#FF7F50'
     }
   }
+  function timer(startTime, endTime) {
+    var start = new moment(startTime);
+    var end = new moment();
+
+    if(endTime !== null && endTime.length !== 0) {
+        end = new moment(endTime);
+    }
+    var duration = moment.duration(end.diff(start));
+    return duration.asMinutes();
+  }
+  const scoreValidation = (newValue, row, column) => {
+    if(isNaN(newValue) || newValue < 1 || newValue > 6)
+    return {
+      valid: false,
+      message: 'The value should be number and in the range of 1 - 5'
+    };
+  }
+
+  const cellStyles =  (content, rowData, rowIndex, colIndex) => {
+    let score = 0;
+    switch (colIndex){
+      
+      case 2:
+      case 3:
+        return {    
+          backgroundColor: updateCellBackground(rowData.testDetails.score)
+        };
+
+      case 4:
+      case 5:
+        if(rowData.testDetails.score < 3) {
+          score = 0;
+        } else {
+          score = rowData.l1Details.score;
+        }
+        return {
+            backgroundColor: updateCellBackground(score)
+        };
+
+      case 6:
+      case 7:
+        if(rowData.testDetails.score < 3 || rowData.l1Details.score < 3) {
+          score = 0;
+        } else {
+          score = rowData.gkDetails.score;
+        }
+        return {
+        backgroundColor: updateCellBackground(score)
+        };
+
+      default: break;
+    }
+  }  
 
     this.columns = [{
       dataField: 'name',
@@ -129,26 +166,12 @@ class App extends Component {
     }, {
       dataField: 'testDetails.score',
       text: 'Test Score',
-      style: (content, rowData, rowIndex, colIndex) => {
-        return {
-        backgroundColor: updateCellBackground(content)
-        };
-      },
-      validator: (newValue, row, column) => {
-         if(isNaN(newValue) || newValue < 1 || newValue >= 5)
-          return {
-            valid: false,
-            message: 'The value should be number and in the range of 1 - 5'
-          };
-      }
+      style: cellStyles,
+      validator: scoreValidation
     }, {
       dataField: 'testDetails.startTime',
       text: 'Test Status',
-      style: (content, rowData, rowIndex, colIndex) => {
-        return {    
-        backgroundColor: updateCellBackground(rowData.testDetails.score)
-        };
-      },
+      style: cellStyles,
       editable: (content, row, rowIndex, columnIndex) => {
         return row.testDetails.score >= 3;
       },
@@ -160,20 +183,9 @@ class App extends Component {
     }, {
       dataField: 'l1Details.score',
       text: 'L1 Score',
-      style: (content, rowData, rowIndex, colIndex) => {
-        let score = rowData.testDetails.score < rowData.l1Details.score ? rowData.testDetails.score :rowData.l1Details.score;        
-        return {
-            backgroundColor: updateCellBackground(score)
-        };
-      },
-      validator: (newValue, row, column) => {
-        if(isNaN(newValue) || newValue < 1 || newValue >= 5)
-         return {
-           valid: false,
-           message: 'The value should be number and in the range of 1 - 5'
-         };
-     },
-     editable: (content, rowData, rowIndex, columnIndex) => {
+      style: cellStyles,
+      validator: scoreValidation,
+      editable: (content, rowData, rowIndex, columnIndex) => {
         return rowData.testDetails.score >= 3;
       },
       formatter: columnFormatter,
@@ -184,12 +196,7 @@ class App extends Component {
     }, {
       dataField: 'l1Details.startTime',
       text: 'L1 Status',
-      style: (content, rowData, rowIndex, colIndex) => {
-        let score = rowData.testDetails.score < rowData.l1Details.score ? rowData.testDetails.score :rowData.l1Details.score;        
-        return {
-            backgroundColor: updateCellBackground(score)
-        };
-      },
+      style: cellStyles,
       editable: (content, rowData, rowIndex, columnIndex) => {
         return rowData.l1Details.score !== "NA" && rowData.testDetails.score >=3
         && rowData.l1Details.score >= 3;
@@ -202,22 +209,9 @@ class App extends Component {
     }, {
       dataField: 'gkDetails.score',
       text: 'GK Score',
-      style: (content, rowData, rowIndex, colIndex) => {
-        let score = rowData.testDetails.score < rowData.l1Details.score 
-                    ? (rowData.testDetails.score < rowData.gkDetails.score ? rowData.testDetails.score : rowData.gkDetails.score)
-                    : (rowData.l1Details.score < rowData.gkDetails.score ? rowData.l1Details.score : rowData.gkDetails.score);
-        return {
-            backgroundColor: updateCellBackground(score)
-        };
-      },
-      validator: (newValue, row, column) => {
-        if(isNaN(newValue) || newValue < 1 || newValue >= 5)
-         return {
-           valid: false,
-           message: 'The value should be number and in the range of 1 - 5'
-         };
-     },
-     editable: (content, rowData, rowIndex, columnIndex) => {
+      style: cellStyles,
+      validator: scoreValidation,
+      editable: (content, rowData, rowIndex, columnIndex) => {
         return rowData.l1Details.score !== "NA" && rowData.testDetails.score >=3
         && rowData.l1Details.score >= 3;
       },
@@ -229,14 +223,7 @@ class App extends Component {
     }, {
       dataField: 'gkDetails.startTime',
       text: 'GK Status',
-      style: (content, rowData, rowIndex, colIndex) => {
-        let score = rowData.testDetails.score < rowData.l1Details.score 
-                    ? (rowData.testDetails.score < rowData.gkDetails.score ? rowData.testDetails.score : rowData.gkDetails.score)
-                    : (rowData.l1Details.score < rowData.gkDetails.score ? rowData.l1Details.score : rowData.gkDetails.score);
-        return {
-            backgroundColor: updateCellBackground(score)
-        };
-    },
+      style: cellStyles,
       editable: (content, rowData, rowIndex, columnIndex) => {
         return rowData.gkDetails.score !== "NA" && rowData.testDetails.score >=3
         && rowData.l1Details.score >= 3 && rowData.gkDetails.score >= 3;
