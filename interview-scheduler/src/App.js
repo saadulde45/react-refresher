@@ -63,6 +63,19 @@ class App extends Component {
       }
     };
 
+    const testValidator = (newValue, row, column) => {
+      var dataField = column.dataField.split('.');
+      var oldData = row[dataField[0]][dataField[1]];
+      
+      if (newValue < oldData) {
+        return {
+          valid: false,
+          message: 'The value should be between 1-5'
+        }
+      }
+      return true;
+    };
+
     this.columns = [{
       dataField: 'name',
       text: 'Name',
@@ -73,7 +86,11 @@ class App extends Component {
       editable: false
     }, {
       dataField: 'testDetails.score',
-      text: 'Test Score'
+      text: 'Test Score',
+      validator: testValidator,
+      editCellClasses: (cell, row, rowIndex, colIndex) => {
+        return (cell < 1 || cell > 5)  ? 'has-error' : 'has-success';
+      }
     }, {
       dataField: 'testDetails.startTime',
       text: 'Test Status',
@@ -132,16 +149,18 @@ class App extends Component {
     }];
 
     this.state = {
-      data: [],
-      loading: true
+      data: this.props.users,
+      loading: false
     };
 
     setTimeout(() => {
-      this.setState({
-        data: this.props.users,
-        loading: false
-      });
+    this.setState({
+      data: this.props.users,
+      loading: false
+    });
     }, 2000);
+
+
   }
 
   render() {
@@ -151,7 +170,6 @@ class App extends Component {
           columns={this.columns}
           data={this.state.data}
           keyField='emailId'
-          errorMessage={this.errorMessage}
           loading={this.state.loading}
         />
       </div>
