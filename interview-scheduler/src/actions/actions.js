@@ -1,4 +1,6 @@
-export const testScoreEdit = (score) => ({
-    TYPE: "TEST_SCORE",
-    payload: score
+const getCandidates = (candidates) => ({
+    TYPE: "GET_CANDIDATES",
+    payload: candidates
 });
+
+export default getCandidates;

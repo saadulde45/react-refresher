@@ -1,7 +1,17 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import getCandidates from "../../actions/actions";
 import CandidateTable from '../candidate-table/candidate-table';
 import moment from 'moment';
+
+const mapStateToProps = function (store) {
+	return { users: store.users }
+}
+
+function mapDispatchToProps(dispatch) {
+	return bindActionCreators({ getCandidates: getCandidates }, dispatch);
+}
 
 class App extends Component {
 
@@ -258,13 +268,15 @@ class App extends Component {
 		}, 2000);
 	}
 
+
+
 	handleTableChange(eventType, { cellEdit, data }) {
 
 		if (eventType === 'cellEdit') {
 
 			var dataField = cellEdit.dataField.split('.');
 			var newData = data.map(row => {
-				if(row.emailId === cellEdit.rowId) {
+				if (row.emailId === cellEdit.rowId) {
 					row[dataField[0]][dataField[1]] = cellEdit.newValue;
 				}
 				return row;
@@ -291,8 +303,4 @@ class App extends Component {
 	}
 }
 
-const mapStateToProps = function (store) {
-	return { users: store.users }
-}
-
-export default connect(mapStateToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);
