@@ -3,6 +3,7 @@ import BootstrapTable from 'react-bootstrap-table-next';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.css';
 import cellEditFactory from 'react-bootstrap-table2-editor';
+import paginationFactory from 'react-bootstrap-table2-paginator';
 import MockData from './mock-data.json';
 import moment from 'moment';
 
@@ -134,12 +135,35 @@ class CandidateTable extends Component {
             mode: 'dbclick'
         });
 
+        /*let getSizePerPageList = () =>{
+            let requestedSizePerPage = MockData.recordsPerPage
+            let totalRecords = MockData.totalRecords
+            let pageListLimit = totalRecords/requestedSizePerPage
+            let sizePerPageListArr = []
+            return sizePerPageListArr;
+        }*/
+        
+        const options = {
+            paginationSize: 2, //page no on UI in box like 1,2,Next, Last  
+            pageStartIndex: 1, // starting Page Index
+            firstPageText: 'First',
+            prePageText: 'Bac   k',
+            nextPageText: 'Next',
+            lastPageText: 'Last',
+            nextPageTitle: 'First page',
+            prePageTitle: 'Pre page',
+            firstPageTitle: 'Next page',
+            lastPageTitle: 'Last page',
+            //sizePerPageList: getSizePerPageList() // A numeric array is also available. the purpose of above example is custom the text
+        };
+    
         return (
             <BootstrapTable
                 keyField="emailId"
                 data={MockData.data}
                 columns={columns}
                 cellEdit={cellEdit}
+                pagination={ paginationFactory(options) }
             />
         );
     };
