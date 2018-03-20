@@ -133,7 +133,14 @@ class App extends Component {
         return {
         backgroundColor: updateCellBackground(content)
         };
-      }                
+      },
+      validator: (newValue, row, column) => {
+         if(isNaN(newValue) || newValue < 1 || newValue >= 5)
+          return {
+            valid: false,
+            message: 'The value should be number and in the range of 1 - 5'
+          };
+      }
     }, {
       dataField: 'testDetails.startTime',
       text: 'Test Status',
@@ -159,7 +166,14 @@ class App extends Component {
             backgroundColor: updateCellBackground(score)
         };
       },
-      editable: (content, rowData, rowIndex, columnIndex) => {
+      validator: (newValue, row, column) => {
+        if(isNaN(newValue) || newValue < 1 || newValue >= 5)
+         return {
+           valid: false,
+           message: 'The value should be number and in the range of 1 - 5'
+         };
+     },
+     editable: (content, rowData, rowIndex, columnIndex) => {
         return rowData.testDetails.score >= 3;
       },
       formatter: columnFormatter,
@@ -196,7 +210,14 @@ class App extends Component {
             backgroundColor: updateCellBackground(score)
         };
       },
-      editable: (content, rowData, rowIndex, columnIndex) => {
+      validator: (newValue, row, column) => {
+        if(isNaN(newValue) || newValue < 1 || newValue >= 5)
+         return {
+           valid: false,
+           message: 'The value should be number and in the range of 1 - 5'
+         };
+     },
+     editable: (content, rowData, rowIndex, columnIndex) => {
         return rowData.l1Details.score !== "NA" && rowData.testDetails.score >=3
         && rowData.l1Details.score >= 3;
       },
