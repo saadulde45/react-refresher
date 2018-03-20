@@ -135,26 +135,39 @@ class CandidateTable extends Component {
             mode: 'dbclick'
         });
 
-        /*let getSizePerPageList = () =>{
+
+        let getSizePerPageList = () =>{
             let requestedSizePerPage = MockData.recordsPerPage
             let totalRecords = MockData.totalRecords
-            let pageListLimit = totalRecords/requestedSizePerPage
+            let pageListLimit = Math.floor(totalRecords/5)
             let sizePerPageListArr = []
-            return sizePerPageListArr;
-        }*/
+            for(var i=1; i<pageListLimit; i++){
+                var sizePerPageListObj = {};
+                    sizePerPageListObj.text = 5*i;
+                    sizePerPageListObj.value = 5*i;
+                sizePerPageListArr.push(sizePerPageListObj)
+                if(i===(pageListLimit-1)){
+                     var sizePerPageListObj = {};
+                    sizePerPageListObj.text = 'All';
+                    sizePerPageListObj.value = totalRecords;
+                    sizePerPageListArr.push(sizePerPageListObj)
+                }
+            }
+         return sizePerPageListArr;
+        }
         
         const options = {
             paginationSize: 2, //page no on UI in box like 1,2,Next, Last  
             pageStartIndex: 1, // starting Page Index
             firstPageText: 'First',
-            prePageText: 'Bac   k',
+            prePageText: 'Back',
             nextPageText: 'Next',
             lastPageText: 'Last',
             nextPageTitle: 'First page',
             prePageTitle: 'Pre page',
             firstPageTitle: 'Next page',
             lastPageTitle: 'Last page',
-            //sizePerPageList: getSizePerPageList() // A numeric array is also available. the purpose of above example is custom the text
+            sizePerPageList: getSizePerPageList() // A numeric array is also available. the purpose of above example is custom the text
         };
     
         return (
