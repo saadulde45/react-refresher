@@ -271,6 +271,49 @@ class App extends Component {
 			order: 'asc'
 		}];
 
+		//pagination constant options...
+		const paginationOptions={
+			paginationSize: 1,  
+			pageStartIndex: 1,
+			firstPageText: 'First',
+			prePageText: 'Back',
+			nextPageText: 'Next',
+			lastPageText: 'Last'
+	//		sizePerPageList: getSizePerPageList()     // A numeric array is also available. the purpose of above example is custom the text   
+		}
+
+    //other constants for pagination functionality...
+    const recordsPerPageOptions = {
+        startDropDownPageindex : 5,
+        allRecords:'All' 
+    }
+
+    //currently below function is not used in pagination
+    function getSizePerPageList(){
+		console.log("in getSizePerPageList", this.state.data)
+        var sizePerPageListArr = [];
+		if(this.state.data){
+			console.log("this.state.data==> ",this.state.data);
+			var totalRecords = this.state.data.length;
+			var pageListLimit = Math.floor(totalRecords/recordsPerPageOptions.startDropDownPageindex);
+			
+			for(var i=0; i<pageListLimit; i++){
+				var sizePerPageListObj = {};
+				sizePerPageListObj.text= sizePerPageListObj.value = recordsPerPageOptions.startDropDownPageindex*i;
+				
+				sizePerPageListArr.push(sizePerPageListObj)
+				if(i===(pageListLimit-1)){
+					var sizePerPageListObj = {};
+					sizePerPageListObj.text = recordsPerPageOptions.allRecords;
+					sizePerPageListObj.value = totalRecords;
+					sizePerPageListArr.push(sizePerPageListObj)                
+				}
+			}
+		}
+		
+        return sizePerPageListArr;
+    }
+
 		this.state = {
 			loading: true
 		};
@@ -317,6 +360,7 @@ class App extends Component {
 					loading={this.state.loading}
 					onTableChange={this.handleTableChange}
 					defaultSorted={ this.defaultSorted }
+					paginationOptions={this.paginationOptions}
 				/>
 			</div>
 		);

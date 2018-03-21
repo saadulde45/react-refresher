@@ -4,15 +4,19 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.css';
 import cellEditFactory from 'react-bootstrap-table2-editor';
 import overlayFactory from 'react-bootstrap-table2-overlay';
+import paginationFactory from 'react-bootstrap-table2-paginator';
 
 const CandidateTable = (props) => {
 
-    const { columns, data, keyField, loading, onTableChange, defaultSorted } = props;
+    const { columns, data, keyField, loading, onTableChange, defaultSorted, paginationOptions } = props;
 
     const cellEdit = cellEditFactory({
         mode: 'dbclick'
     });
 
+    const pagination =  paginationFactory(paginationOptions);
+
+    console.log("paginationOptions--> ",paginationOptions)
     return (
         <BootstrapTable
             remote={{ cellEdit: true }}
@@ -30,6 +34,7 @@ const CandidateTable = (props) => {
             }
             overlay={overlayFactory({ spinner: true, background: 'rgba(192,192,192,0.3)' })}
             defaultSorted={defaultSorted}
+            pagination={pagination}
         />
     );
 }
