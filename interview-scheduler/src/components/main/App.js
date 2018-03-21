@@ -2,20 +2,20 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import './App.scss';
 import { bindActionCreators } from 'redux';
-import getCandidates, {updateTestScore} from "../../actions/actions";
+import getCandidates, { updateTestScore } from "../../actions/actions";
 import CandidateTable from '../candidate-table/candidate-table';
 import moment from 'moment';
+import _ from 'underscore';
 
 const mapStateToProps = function (store) {
-	console.log("stat store", store);
 	return { candidates: store.candidatesRed.candidates }
 }
 
 function mapDispatchToProps(dispatch) {
-	return bindActionCreators({ 
+	return bindActionCreators({
 		getCandidates: getCandidates,
 		updateTestScore: updateTestScore
-	 }, dispatch);
+	}, dispatch);
 }
 
 class App extends Component {
@@ -23,15 +23,28 @@ class App extends Component {
 	constructor(props) {
 		super(props);
 
-		console.log("app props", props);
+		const startInterview = (column, scoreValue, id) => {
+
+			var temp = {
+				cellEdit: {
+					dataField: column.columnType + "." + column.columnField,
+					rowId: id,
+					newValue: scoreValue ? scoreValue : 0
+				},
+				data: this.state.data
+			}
+			this.handleTableChange("cellEdit", temp);
+		}
 
 		const columnFormatter = (cell, rowData, rowIdx, extraFormatData) => {
 
 			if (extraFormatData.columnType === "testDetails") {
-				if (rowData.testDetails.score < 3) {
-					return ( <span className='rejected'>Rejected</span> );
+				if (rowData.testDetails.score === null) {
+					return (<span>NA</span>);
+				} else if (rowData.testDetails.score < 3) {
+					return (<span className='rejected'>Rejected</span>);
 				} else {
-					return ( <span className='selected'>Selected</span> );
+					return (<span className='selected'>Selected</span>);
 				}
 			}
 
@@ -39,27 +52,38 @@ class App extends Component {
 				switch (extraFormatData.columnField) {
 					case "score":
 						if (rowData.testDetails.score >= 3) {
-							if (rowData.l1Details.score !== null) {
-								return rowData.l1Details.score;
-							} else {
+							console.log("check", rowData.l1Details.score);
+							if (rowData.l1Details.score === null) {
 								return (
-									<button className="btn btn-primary">Schedule L1</button>
+									<button className="btn btn-primary"
+										onClick={() => { startInterview(extraFormatData, rowData.l1Details.score, rowData.emailId) }}
+									>Schedule L1</button>
 								);
+							} else if (rowData.l1Details.score === 0) {
+								return (
+									<span className="btn btn-primary">Finish Interview</span>
+								);
+							} else {
+								return rowData.l1Details.score;
 							}
 						} else {
 							return "NA";
 						}
 					case "status":
-						if (rowData.testDetails.score >= 3 && rowData.l1Details.score !== null) {
+						if (rowData.testDetails.score >= 3 && rowData.l1Details.score > 0) {
 
-							if (rowData.l1Details.score >= 3) {
+							if (rowData.l1Details.startTime.length !== 0 && rowData.l1Details.endTime.length === 0) {
+								return (
+									<span>Started at {moment(rowData.l1Details.startTime).format("HH:mm:ss")}</span>
+								);
+							} else if (rowData.l1Details.score >= 3) {
 								return (
 									<span>
 										Selected {timer(rowData.l1Details.startTime, rowData.l1Details.endTime)} mins
-                            </span>
+                            		</span>
 								);
 							} else {
-								return ( <span className='rejected'>Rejected</span> );
+								return (<span className='rejected'>Rejected</span>);
 							}
 						} else {
 							return "NA";
@@ -93,7 +117,7 @@ class App extends Component {
                                   </span>
 									);
 								} else {
-									return ( <span className='rejected'>Rejected</span> );
+									return (<span className='rejected'>Rejected</span>);
 								}
 							} else {
 								return "NA";
@@ -108,9 +132,9 @@ class App extends Component {
 		};
 
 		function updateCellBackground(cellValue) {
-			if (cellValue === 0) {
+			if (cellValue === 0 || cellValue === null) {
 				return '#f0f0f0'
-			} else if (cellValue === null || cellValue < 3) {
+			} else if (cellValue < 3) {
 				return '#ffdada'
 			} else if (cellValue >= 3 && cellValue <= 5) {
 				return '#e6ffc4'
@@ -182,17 +206,17 @@ class App extends Component {
 		this.columns = [{
 			dataField: 'name',
 			text: 'Name',
-			sort:true,
+			sort: true,
 			editable: false
 		}, {
 			dataField: 'experience',
 			text: 'Experience',
-			sort:true,
+			sort: true,
 			editable: false
 		}, {
 			dataField: 'testDetails.score',
 			text: 'Test Score',
-			sort:true,
+			sort: true,
 			style: cellStyles,
 			validator: scoreValidation,
 			editCellClasses: (cell, row, rowIndex, colIndex) => {
@@ -201,7 +225,7 @@ class App extends Component {
 		}, {
 			dataField: 'testDetails.startTime',
 			text: 'Test Status',
-			sort:true,
+			sort: true,
 			style: cellStyles,
 			editable: (content, row, rowIndex, columnIndex) => {
 				return row.testDetails.score >= 3;
@@ -214,7 +238,7 @@ class App extends Component {
 		}, {
 			dataField: 'l1Details.score',
 			text: 'L1 Score',
-			sort:true,
+			sort: true,
 			style: cellStyles,
 			validator: scoreValidation,
 			editable: (content, rowData, rowIndex, columnIndex) => {
@@ -228,7 +252,7 @@ class App extends Component {
 		}, {
 			dataField: 'l1Details.startTime',
 			text: 'L1 Status',
-			sort:true,
+			sort: true,
 			style: cellStyles,
 			editable: (content, rowData, rowIndex, columnIndex) => {
 				return rowData.l1Details.score !== "NA" && rowData.testDetails.score >= 3
@@ -242,7 +266,7 @@ class App extends Component {
 		}, {
 			dataField: 'gkDetails.score',
 			text: 'GK Score',
-			sort:true,
+			sort: true,
 			style: cellStyles,
 			validator: scoreValidation,
 			editable: (content, rowData, rowIndex, columnIndex) => {
@@ -257,7 +281,7 @@ class App extends Component {
 		}, {
 			dataField: 'gkDetails.startTime',
 			text: 'GK Status',
-			sort:true,
+			sort: true,
 			style: cellStyles,
 			editable: (content, rowData, rowIndex, columnIndex) => {
 				return rowData.gkDetails.score !== "NA" && rowData.testDetails.score >= 3
@@ -276,11 +300,10 @@ class App extends Component {
 		}];
 
 		this.state = {
-			loading: true
+			loading: true,
+			mobile: false
 		};
 	}
-
-
 
 	handleTableChange(eventType, { cellEdit, data }) {
 
@@ -289,7 +312,9 @@ class App extends Component {
 			var dataField = cellEdit.dataField.split('.');
 			var newData = data.map(row => {
 				if (row.emailId === cellEdit.rowId) {
-					row[dataField[0]][dataField[1]] = cellEdit.newValue;
+					if (cellEdit.dataField) {
+						row[dataField[0]][dataField[1]] = cellEdit.newValue;
+					}
 				}
 				return row;
 			});
@@ -300,6 +325,12 @@ class App extends Component {
 
 	componentDidMount() {
 		this.props.getCandidates();
+		_.debounce(window.addEventListener("resize", this.resize.bind(this)), 1000);
+		this.resize();
+	}
+
+	resize() {
+		this.setState({ mobile: window.innerWidth <= 1024 });
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -315,7 +346,7 @@ class App extends Component {
 				<div className="row">
 					<div className="col-md-12">
 						<h1 className="heading">Interview Scheduler</h1>
-						<hr/>
+						<hr />
 					</div>
 				</div>
 				<div className="row">
@@ -326,10 +357,11 @@ class App extends Component {
 							keyField='emailId'
 							loading={this.state.loading}
 							onTableChange={this.handleTableChange}
-							defaultSorted={ this.defaultSorted }
+							defaultSorted={this.defaultSorted}
+							mobile={this.state.mobile}
 						/>
 					</div>
-        		</div>
+				</div>
 			</div>
 		);
 	}

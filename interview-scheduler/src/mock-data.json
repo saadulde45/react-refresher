@@ -196,9 +196,9 @@
         "score": null
       },
       "gkDetails": {
-        "startTime": "2018-03-18 11:50:00",
-        "endTime": "2018-03-18 11:50:00",
-        "score": 4.5
+        "startTime": "",
+        "endTime": "",
+        "score": null
       },
       "finalResult": {
         "status": "Test Rejects",
@@ -254,7 +254,7 @@
         "status": "",
         "seniority": ""
       }
-    } ,
+    },
     {
       "name": "Emma",
       "resumeLink": "https://docs.google.com/spreadsheets/d/1vIVhF90yya4XFKEMu1EMyKnSScbe-qus8F1-Tub0awE/edit#gid=0",
@@ -504,6 +504,6 @@
         "status": "",
         "seniority": ""
       }
-    }       
+    }
   ]
 }
