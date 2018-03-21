@@ -309,15 +309,25 @@ class App extends Component {
 
 	render() {
 		return (
-			<div>
-				<CandidateTable
-					columns={this.columns}
-					data={this.state.data}
-					keyField='emailId'
-					loading={this.state.loading}
-					onTableChange={this.handleTableChange}
-					defaultSorted={ this.defaultSorted }
-				/>
+			<div className="container main">
+				<div className="row">
+					<div className="col-md-12">
+						<h1 className="heading">Interview Scheduler</h1>
+						<hr/>
+					</div>
+				</div>
+				<div className="row">
+					<div className="col-md-12">
+						<CandidateTable
+							columns={this.columns}
+							data={this.state.data}
+							keyField='emailId'
+							loading={this.state.loading}
+							onTableChange={this.handleTableChange}
+							defaultSorted={ this.defaultSorted }
+						/>
+					</div>
+        		</div>
 			</div>
 		);
 	}
