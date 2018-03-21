@@ -25,13 +25,26 @@ class App extends Component {
 
 		const startInterview = (column, scoreValue, id) => {
 
-			var temp = {
+			console.log("interview", scoreValue);
+
+			let updatedData = this.state.data.map(row => {
+				if (row.emailId === id) {
+					if (scoreValue === null) {
+						row[column.columnType]["startTime"] = moment().format("YYYY-MM-DD HH:MM:SS");
+					} else {
+						row[column.columnType]["endTime"] = moment().format("YYYY-MM-DD HH:MM:SS");
+					}
+				}
+				return row;
+			});
+
+			let temp = {
 				cellEdit: {
 					dataField: column.columnType + "." + column.columnField,
 					rowId: id,
 					newValue: scoreValue ? scoreValue : 0
 				},
-				data: this.state.data
+				data: updatedData
 			}
 			this.handleTableChange("cellEdit", temp);
 		}
@@ -52,7 +65,6 @@ class App extends Component {
 				switch (extraFormatData.columnField) {
 					case "score":
 						if (rowData.testDetails.score >= 3) {
-							console.log("check", rowData.l1Details.score);
 							if (rowData.l1Details.score === null) {
 								return (
 									<button className="btn btn-primary"
@@ -61,7 +73,9 @@ class App extends Component {
 								);
 							} else if (rowData.l1Details.score === 0) {
 								return (
-									<span className="btn btn-primary">Finish Interview</span>
+									<button className="btn btn-primary"
+										onClick={() => { startInterview(extraFormatData, rowData.l1Details.score, rowData.emailId) }}
+									>Finish Interview</button>
 								);
 							} else {
 								return rowData.l1Details.score;
@@ -70,6 +84,7 @@ class App extends Component {
 							return "NA";
 						}
 					case "status":
+						console.log("score", rowData.l1Details.score);
 						if (rowData.testDetails.score >= 3 && rowData.l1Details.score > 0) {
 
 							if (rowData.l1Details.startTime.length !== 0 && rowData.l1Details.endTime.length === 0) {
@@ -144,13 +159,13 @@ class App extends Component {
 		}
 
 		function timer(startTime, endTime) {
-			var start = new moment(startTime);
-			var end = new moment();
+			let start = new moment(startTime);
+			let end = new moment();
 
 			if (endTime !== null && endTime.length !== 0) {
 				end = new moment(endTime);
 			}
-			var duration = moment.duration(end.diff(start));
+			let duration = moment.duration(end.diff(start));
 			return duration.asMinutes();
 		}
 
@@ -309,8 +324,8 @@ class App extends Component {
 
 		if (eventType === 'cellEdit') {
 
-			var dataField = cellEdit.dataField.split('.');
-			var newData = data.map(row => {
+			let dataField = cellEdit.dataField.split('.');
+			let newData = data.map(row => {
 				if (row.emailId === cellEdit.rowId) {
 					if (cellEdit.dataField) {
 						row[dataField[0]][dataField[1]] = cellEdit.newValue;
