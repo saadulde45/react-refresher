@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import './App.scss';
 import { bindActionCreators } from 'redux';
-import getCandidates from "../../actions/actions";
+import getCandidates, {updateTestScore} from "../../actions/actions";
 import CandidateTable from '../candidate-table/candidate-table';
 import moment from 'moment';
 
@@ -12,7 +12,10 @@ const mapStateToProps = function (store) {
 }
 
 function mapDispatchToProps(dispatch) {
-	return bindActionCreators({ getCandidates: getCandidates }, dispatch);
+	return bindActionCreators({ 
+		getCandidates: getCandidates,
+		updateTestScore: updateTestScore
+	 }, dispatch);
 }
 
 class App extends Component {
@@ -291,16 +294,14 @@ class App extends Component {
 				return row;
 			});
 
-			this.setState({
-				data: newData
-			});
+			this.props.updateTestScore(newData);
 		}
 	}
 
 	componentDidMount() {
 		this.props.getCandidates();
 	}
-	
+
 	componentWillReceiveProps(nextProps) {
 		this.setState({
 			data: nextProps.candidates,

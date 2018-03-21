@@ -7,6 +7,10 @@ const userReducer = (state = {}, action) => {
             return Object.assign({}, state, {
                 "candidates": MockData.data
             });
+        case "UPDATE_TEST_SCORE":
+            return Object.assign({}, state, {
+                "candidates": action.payload
+            });
         default:
             return state;
     }
