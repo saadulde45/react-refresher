@@ -178,14 +178,17 @@ class App extends Component {
 		this.columns = [{
 			dataField: 'name',
 			text: 'Name',
+			sort:true,
 			editable: false
 		}, {
 			dataField: 'experience',
 			text: 'Experience',
+			sort:true,
 			editable: false
 		}, {
 			dataField: 'testDetails.score',
 			text: 'Test Score',
+			sort:true,
 			style: cellStyles,
 			validator: scoreValidation,
 			editCellClasses: (cell, row, rowIndex, colIndex) => {
@@ -194,6 +197,7 @@ class App extends Component {
 		}, {
 			dataField: 'testDetails.startTime',
 			text: 'Test Status',
+			sort:true,
 			style: cellStyles,
 			editable: (content, row, rowIndex, columnIndex) => {
 				return row.testDetails.score >= 3;
@@ -206,6 +210,7 @@ class App extends Component {
 		}, {
 			dataField: 'l1Details.score',
 			text: 'L1 Score',
+			sort:true,
 			style: cellStyles,
 			validator: scoreValidation,
 			editable: (content, rowData, rowIndex, columnIndex) => {
@@ -219,6 +224,7 @@ class App extends Component {
 		}, {
 			dataField: 'l1Details.startTime',
 			text: 'L1 Status',
+			sort:true,
 			style: cellStyles,
 			editable: (content, rowData, rowIndex, columnIndex) => {
 				return rowData.l1Details.score !== "NA" && rowData.testDetails.score >= 3
@@ -232,6 +238,7 @@ class App extends Component {
 		}, {
 			dataField: 'gkDetails.score',
 			text: 'GK Score',
+			sort:true,
 			style: cellStyles,
 			validator: scoreValidation,
 			editable: (content, rowData, rowIndex, columnIndex) => {
@@ -246,6 +253,7 @@ class App extends Component {
 		}, {
 			dataField: 'gkDetails.startTime',
 			text: 'GK Status',
+			sort:true,
 			style: cellStyles,
 			editable: (content, rowData, rowIndex, columnIndex) => {
 				return rowData.gkDetails.score !== "NA" && rowData.testDetails.score >= 3
@@ -256,6 +264,11 @@ class App extends Component {
 				"columnType": "gkDetails",
 				"columnField": "status"
 			}
+		}];
+
+		this.defaultSorted = [{
+			dataField: 'name',
+			order: 'asc'
 		}];
 
 		this.state = {
@@ -303,6 +316,7 @@ class App extends Component {
 					keyField='emailId'
 					loading={this.state.loading}
 					onTableChange={this.handleTableChange}
+					defaultSorted={ this.defaultSorted }
 				/>
 			</div>
 		);
