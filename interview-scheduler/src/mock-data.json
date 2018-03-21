@@ -388,17 +388,17 @@
       "testDetails": {
         "startTime": "2018-03-16 11:50:00",
         "endTime": "2018-03-16 12:50:00",
-        "score": 3
+        "score": 10
       },
       "l1Details": {
         "startTime": "2018-03-18 21:50:00",
         "endTime": "",
-        "score": 3
+        "score": null
       },
       "gkDetails": {
         "startTime": "2018-03-16 11:50:00",
         "endTime": "",
-        "score": 3
+        "score": null
       },
       "finalResult": {
         "status": "Test Rejects",

@@ -50,15 +50,24 @@ class App extends Component {
 		}
 
 		const columnFormatter = (cell, rowData, rowIdx, extraFormatData) => {
-
 			if (extraFormatData.columnType === "testDetails") {
-				if (rowData.testDetails.score === null) {
-					return (<span>NA</span>);
-				} else if (rowData.testDetails.score < 3) {
-					return (<span className='rejected'>Rejected</span>);
-				} else {
-					return (<span className='selected'>Selected</span>);
-				}
+				switch (extraFormatData.columnField) {
+					case "score":		
+						if (rowData.testDetails.score !== null) {
+							return rowData.testDetails.score;							
+						} else {
+							return "Enter score";							
+						}
+					case "status":
+						if (rowData.testDetails.score === null) {
+							return "NA";
+						} else if (rowData.testDetails.score < 3) {
+							return "Rejected";
+						} else {
+							return "Selected";
+						}
+					default : break;	
+				};
 			}
 
 			if (extraFormatData.columnType === "l1Details") {
@@ -116,7 +125,7 @@ class App extends Component {
 								return rowData.gkDetails.score;
 							} else {
 								return (
-									<button className="btn btn-primary">Schedule L1</button>
+									<button className="btn btn-primary">Schedule GK</button>
 								);
 							}
 						} else {
@@ -186,13 +195,18 @@ class App extends Component {
 
 				case 2:
 				case 3:
+					if (rowData.testDetails.score === null) {
+						score = 0;
+					} else {
+						score = rowData.testDetails.score;
+					}			
 					return {
-						backgroundColor: updateCellBackground(rowData.testDetails.score)
+						backgroundColor: updateCellBackground(score)
 					};
 
 				case 4:
 				case 5:
-					if (rowData.testDetails.score < 3) {
+					if (rowData.testDetails.score < 3 || rowData.l1Details.score === null) {
 						score = 0;
 					} else {
 						score = rowData.l1Details.score;
@@ -203,7 +217,7 @@ class App extends Component {
 
 				case 6:
 				case 7:
-					if (rowData.testDetails.score < 3 || rowData.l1Details.score < 3) {
+					if (rowData.testDetails.score < 3 || rowData.l1Details.score < 3 || rowData.gkDetails.score === null) {
 						score = 0;
 					} else {
 						score = rowData.gkDetails.score;
@@ -236,15 +250,18 @@ class App extends Component {
 			validator: scoreValidation,
 			editCellClasses: (cell, row, rowIndex, colIndex) => {
 				return (cell < 1 || cell > 5) ? 'has-error' : 'has-success';
+			},
+			formatter: columnFormatter,
+			formatExtraData: {
+				"columnType": "testDetails",
+				"columnField": "score"
 			}
 		}, {
 			dataField: 'testDetails.startTime',
 			text: 'Test Status',
 			sort: true,
 			style: cellStyles,
-			editable: (content, row, rowIndex, columnIndex) => {
-				return row.testDetails.score >= 3;
-			},
+			editable: false,
 			formatter: columnFormatter,
 			formatExtraData: {
 				"columnType": "testDetails",
