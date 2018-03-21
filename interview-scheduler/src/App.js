@@ -65,7 +65,7 @@ class App extends Component {
 
     this.columns = [{
       dataField: 'name',
-      text: 'Name',
+      text: 'Candidate Name',
       editable: false
     }, {
       dataField: 'experience',
@@ -146,14 +146,24 @@ class App extends Component {
 
   render() {
     return (
-      <div>
-        <CandidateTable
-          columns={this.columns}
-          data={this.state.data}
-          keyField='emailId'
-          errorMessage={this.errorMessage}
-          loading={this.state.loading}
-        />
+      <div className="container main">
+        <div className="row">
+          <div className="col-md-12">
+            <h1 className="heading">Interview Scheduler</h1>
+            <hr/>
+          </div>
+        </div>
+        <div className="row">
+          <div className="col-md-12">
+            <CandidateTable
+              columns={this.columns}
+              data={this.state.data}
+              keyField='emailId'
+              errorMessage={this.errorMessage}
+              loading={this.state.loading}
+            />
+          </div>
+        </div>
       </div>
     );
   }
