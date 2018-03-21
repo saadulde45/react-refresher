@@ -62,9 +62,9 @@ class App extends Component {
 						if (rowData.testDetails.score === null) {
 							return "NA";
 						} else if (rowData.testDetails.score < 3) {
-							return "Rejected";
+							return ( <span className='rejected'>Rejected</span> );;
 						} else {
-							return "Selected";
+							return ( <span className='selected'>Selected</span> );;
 						}
 					default : break;	
 				};
@@ -74,17 +74,15 @@ class App extends Component {
 				switch (extraFormatData.columnField) {
 					case "score":
 						if (rowData.testDetails.score >= 3) {
-							if (rowData.l1Details.score === null) {
+							if (rowData.l1Details.startTime.length === 0) {
 								return (
 									<button className="btn btn-primary"
 										onClick={() => { startInterview(extraFormatData, rowData.l1Details.score, rowData.emailId) }}
 									>Schedule L1</button>
 								);
-							} else if (rowData.l1Details.score === 0) {
+							} else if (rowData.l1Details.startTime.length !== 0 && rowData.l1Details.endTime.length === 0) {
 								return (
-									<button className="btn btn-primary"
-										onClick={() => { startInterview(extraFormatData, rowData.l1Details.score, rowData.emailId) }}
-									>Finish Interview</button>
+									<button className="btn btn-primary">Finish Interview</button>
 								);
 							} else {
 								return rowData.l1Details.score;
@@ -94,7 +92,7 @@ class App extends Component {
 						}
 					case "status":
 						console.log("score", rowData.l1Details.score);
-						if (rowData.testDetails.score >= 3 && rowData.l1Details.score > 0) {
+						if (rowData.testDetails.score >= 3 && rowData.l1Details.score !== null) {
 
 							if (rowData.l1Details.startTime.length !== 0 && rowData.l1Details.endTime.length === 0) {
 								return (
@@ -179,7 +177,7 @@ class App extends Component {
 		}
 
 		const scoreValidation = (newValue, row, column) => {
-			if (isNaN(newValue) || newValue < 1 || newValue > 6) {
+			if (isNaN(newValue) || newValue < 1 || newValue > 5) {
 				return {
 					valid: false,
 					message: 'The value should be number and in the range of 1 - 5'
@@ -286,10 +284,7 @@ class App extends Component {
 			text: 'L1 Status',
 			sort: true,
 			style: cellStyles,
-			editable: (content, rowData, rowIndex, columnIndex) => {
-				return rowData.l1Details.score !== "NA" && rowData.testDetails.score >= 3
-					&& rowData.l1Details.score >= 3;
-			},
+			editable: false,
 			formatter: columnFormatter,
 			formatExtraData: {
 				"columnType": "l1Details",
@@ -315,10 +310,7 @@ class App extends Component {
 			text: 'GK Status',
 			sort: true,
 			style: cellStyles,
-			editable: (content, rowData, rowIndex, columnIndex) => {
-				return rowData.gkDetails.score !== "NA" && rowData.testDetails.score >= 3
-					&& rowData.l1Details.score >= 3 && rowData.gkDetails.score >= 3;
-			},
+			editable: false,
 			formatter: columnFormatter,
 			formatExtraData: {
 				"columnType": "gkDetails",
