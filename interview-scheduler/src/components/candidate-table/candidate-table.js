@@ -7,9 +7,7 @@ import overlayFactory from 'react-bootstrap-table2-overlay';
 
 const CandidateTable = (props) => {
 
-    const { columns, data, keyField, loading } = props;
-
-    console.log("props", props);
+    const { columns, data, keyField, loading, onTableChange } = props;
 
     const cellEdit = cellEditFactory({
         mode: 'dbclick'
@@ -17,18 +15,20 @@ const CandidateTable = (props) => {
 
     return (
         <BootstrapTable
+            remote={{ cellEdit: true }}
             keyField={keyField}
             data={data}
             columns={columns}
             cellEdit={cellEdit}
             loading={loading}
-            noDataIndication={ () => {
-                    if(!loading && data.length === 0) {
-                        return (<div>sorry no data </div>);
-                    }
+            onTableChange={onTableChange}
+            noDataIndication={() => {
+                if (!loading && data.length === 0) {
+                    return (<div>sorry no data </div>);
                 }
             }
-            overlay={ overlayFactory({ spinner: true, background: 'rgba(192,192,192,0.3)' }) }
+            }
+            overlay={overlayFactory({ spinner: true, background: 'rgba(192,192,192,0.3)' })}
         />
     );
 }
