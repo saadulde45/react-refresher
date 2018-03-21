@@ -7,7 +7,7 @@ import overlayFactory from 'react-bootstrap-table2-overlay';
 
 const CandidateTable = (props) => {
 
-    const { columns, data, keyField, loading, onTableChange } = props;
+    const { columns, data, keyField, loading, onTableChange, defaultSorted } = props;
 
     const cellEdit = cellEditFactory({
         mode: 'dbclick'
@@ -29,6 +29,7 @@ const CandidateTable = (props) => {
             }
             }
             overlay={overlayFactory({ spinner: true, background: 'rgba(192,192,192,0.3)' })}
+            defaultSorted={defaultSorted}
         />
     );
 }
