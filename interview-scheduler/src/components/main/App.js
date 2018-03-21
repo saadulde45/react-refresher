@@ -7,7 +7,7 @@ import moment from 'moment';
 
 const mapStateToProps = function (store) {
 	console.log("stat store", store);
-	return { candidates: store.candidates.candidates }
+	return { candidates: store.candidatesRed.candidates }
 }
 
 function mapDispatchToProps(dispatch) {
@@ -259,7 +259,6 @@ class App extends Component {
 		}];
 
 		this.state = {
-			data: this.props.candidates,
 			loading: true
 		};
 	}
@@ -286,6 +285,13 @@ class App extends Component {
 
 	componentDidMount() {
 		this.props.getCandidates();
+	}
+	
+	componentWillReceiveProps(nextProps) {
+		this.setState({
+			data: nextProps.candidates,
+			loading: false
+		});
 	}
 
 	render() {
