@@ -31,77 +31,56 @@ class App extends Component {
 				}
 			}
 
-			if (extraFormatData.columnType === "l1Details") {
-				switch (extraFormatData.columnField) {
-					case "score":
-						if (rowData.testDetails.score >= 3) {
-							if (rowData.l1Details.score !== null) {
-								return rowData.l1Details.score;
+			if (extraFormatData.columnType === "l1Details" || extraFormatData.columnType === "gkDetails") {
+				return getDetails(rowData, extraFormatData);
+			}
+		};
+		function getDetails(rowData, extraFormatData) {
+			switch (extraFormatData.columnField) {
+				case "score":
+					if (rowData.testDetails.score >= 3) {
+						if (rowData.l1Details.score !== null) {
+							if(extraFormatData.columnType === "gkDetails") {
+								if(rowData.l1Details.score >= 3) {
+									return rowData.gkDetails.score;
+								} else {
+									return scheduleL1();
+								}
 							} else {
-								return (
-									<button>Schedule L1</button>
-								);
-							}
+								return rowData.l1Details.score;
+							}							
 						} else {
-							return "NA";
+							return scheduleL1();
 						}
-					case "status":
-						if (rowData.testDetails.score >= 3 && rowData.l1Details.score !== null) {
+					} else {
+						return "NA";
+					}
+				case "status":
 
+					if (rowData.testDetails.score >= 3 && rowData.l1Details.score !== null) {
 							if (rowData.l1Details.score >= 3) {
-								return (
-									<span>
-										Selected {timer(rowData.l1Details.startTime, rowData.l1Details.endTime)} mins
-                            </span>
-								);
+									if(extraFormatData.columnType === "l1Details") {
+										return timer(rowData.l1Details.startTime, rowData.l1Details.endTime);
+									}
+									if(extraFormatData.columnType === "gkDetails" && rowData.gkDetails.score !== null) {
+										if (rowData.gkDetails.score >= 3) {
+											return timer(rowData.gkDetails.startTime, rowData.gkDetails.endTime);
+										} else {
+											return "Rejected";
+										}
+									} else {
+										return "NA";
+									}
 							} else {
 								return "Rejected";
 							}
 						} else {
 							return "NA";
 						}
-					default: break;
-				}
-
+				default: break;
 			}
 
-			if (extraFormatData.columnType === "gkDetails") {
-				switch (extraFormatData.columnField) {
-					case "score":
-						if (rowData.testDetails.score >= 3 && rowData.l1Details.score >= 3) {
-							if (rowData.gkDetails.score !== null) {
-								return rowData.gkDetails.score;
-							} else {
-								return (
-									<button>Schedule L1</button>
-								);
-							}
-						} else {
-							return "NA";
-						}
-					case "status":
-						if (rowData.testDetails.score >= 3 && rowData.l1Details.score >= 3) {
-							if (rowData.gkDetails.score !== null) {
-								if (rowData.gkDetails.score >= 3) {
-									return (
-										<span>
-											Selected {timer(rowData.gkDetails.startTime, rowData.gkDetails.endTime)} mins
-                                  </span>
-									);
-								} else {
-									return "Rejected";
-								}
-							} else {
-								return "NA";
-							}
-						} else {
-							return "NA";
-						}
-					default: break;
-				}
-
-			}
-		};
+		}
 
 		function updateCellBackground(cellValue) {
 			if (cellValue === 0) {
@@ -123,9 +102,11 @@ class App extends Component {
 				end = new moment(endTime);
 			}
 			var duration = moment.duration(end.diff(start));
-			return duration.asMinutes();
+			return <span>Selected {duration.asMinutes()} mins</span>			
 		}
-
+		function scheduleL1() {
+			return	<button>Schedule L1</button>;
+		}
 		const scoreValidation = (newValue, row, column) => {
 			if (isNaN(newValue) || newValue < 1 || newValue > 6) {
 				return {
