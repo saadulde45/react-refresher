@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import './App.scss';
 import { bindActionCreators } from 'redux';
 import getCandidates from "../../actions/actions";
 import CandidateTable from '../candidate-table/candidate-table';
@@ -25,9 +26,9 @@ class App extends Component {
 
 			if (extraFormatData.columnType === "testDetails") {
 				if (rowData.testDetails.score < 3) {
-					return "Rejected";
+					return ( <span className='rejected'>Rejected</span> );
 				} else {
-					return "Selected";
+					return ( <span className='selected'>Selected</span> );
 				}
 			}
 
@@ -39,7 +40,7 @@ class App extends Component {
 								return rowData.l1Details.score;
 							} else {
 								return (
-									<button>Schedule L1</button>
+									<button className="btn btn-primary">Schedule L1</button>
 								);
 							}
 						} else {
@@ -55,7 +56,7 @@ class App extends Component {
                             </span>
 								);
 							} else {
-								return "Rejected";
+								return ( <span className='rejected'>Rejected</span> );
 							}
 						} else {
 							return "NA";
@@ -73,7 +74,7 @@ class App extends Component {
 								return rowData.gkDetails.score;
 							} else {
 								return (
-									<button>Schedule L1</button>
+									<button className="btn btn-primary">Schedule L1</button>
 								);
 							}
 						} else {
@@ -89,7 +90,7 @@ class App extends Component {
                                   </span>
 									);
 								} else {
-									return "Rejected";
+									return ( <span className='rejected'>Rejected</span> );
 								}
 							} else {
 								return "NA";
@@ -105,11 +106,11 @@ class App extends Component {
 
 		function updateCellBackground(cellValue) {
 			if (cellValue === 0) {
-				return '#808080'
+				return '#f0f0f0'
 			} else if (cellValue === null || cellValue < 3) {
-				return '#FA8072'
+				return '#ffdada'
 			} else if (cellValue >= 3 && cellValue <= 5) {
-				return '#ADFF2F'
+				return '#e6ffc4'
 			} else {
 				return '#FF7F50'
 			}

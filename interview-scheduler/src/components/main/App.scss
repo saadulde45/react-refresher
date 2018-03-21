@@ -1,5 +1,5 @@
 body {
-    font-family: sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
     font-size: 100%;
     color: #000;
     line-height: 1.0em;
@@ -17,4 +17,78 @@ h1 {
         font-size:36px;
         font-weight:800;
     }
+}
+.rejected {
+    font-weight: 800;
+    color: #d20000;
+}
+.selected {
+    font-weight: 800;
+    color: #2f6a00;
+}
+
+
+@media 
+only screen and (max-width: 760px),
+(min-device-width: 768px) and (max-device-width: 960px)  {
+    h1 {
+        &.heading {
+            text-align: center;
+            font-size: 30px;
+        }
+    }
+    .container {
+        &.main {
+            background: #fff;
+            padding: 20px 40px 40px;
+        }
+    }
+	/* Force table to not be like tables anymore */
+	table, thead, tbody, th, td, tr { 
+		display: block; 
+	}
+	
+	/* Hide table headers (but not display: none;, for accessibility) */
+	thead tr { 
+		position: absolute;
+		top: -9999px;
+		left: -9999px;
+    }
+    table.table-bordered {border:none;}
+	
+	tr { border: 1px solid #ccc; margin-bottom: 20px;}
+	
+	td { 
+		/* Behave  like a "row" */
+		border: none !important;
+		border-bottom: 1px solid #ccc !important; 
+		position: relative;
+		padding-left: 50% !important; 
+	}
+	
+	td:before { 
+		/* Now like a table header */
+		position: absolute;
+		/* Top/left values mimic padding */
+		top: 0px;
+		left: 0px;
+		width: 45%; 
+		padding: 6px 8px 0px 4px; 
+        white-space: nowrap;
+        font-weight: bold;
+        height: 100%;
+        border-right:solid 1px #ccc;
+        background: #fff;
+	}
+	td:nth-of-type(1):before { content: "Candidate Name:"; }
+	td:nth-of-type(2):before { content: "Experience:"; }
+	td:nth-of-type(3):before { content: "Test Score:"; }
+	td:nth-of-type(4):before { content: "Test Status:"; }
+	td:nth-of-type(5):before { content: "L1 Score:"; }
+	td:nth-of-type(6):before { content: "L1 Status:"; }
+	td:nth-of-type(7):before { content: "GK Score:"; }
+	td:nth-of-type(8):before { content: "GK Status:"; }
+	/*
+	Label the data
+	*/
 }
