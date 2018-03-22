@@ -8,15 +8,14 @@ import paginationFactory from 'react-bootstrap-table2-paginator';
 
 const CandidateTable = (props) => {
 
-    const { columns, data, keyField, loading, onTableChange, defaultSorted, paginationOptions } = props;
+    const { columns, data, keyField, loading, onTableChange, defaultSorted, mobile, paginationOptions } = props;
 
     const cellEdit = cellEditFactory({
-        mode: 'dbclick'
+        mode: mobile ? 'click' : 'dbclick'
     });
 
     const pagination =  paginationFactory(paginationOptions);
 
-    console.log("paginationOptions--> ",paginationOptions)
     return (
         <BootstrapTable
             remote={{ cellEdit: true }}
