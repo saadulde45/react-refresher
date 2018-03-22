@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import getCandidates from "../../actions/actions";
 import CandidateTable from '../candidate-table/candidate-table';
+import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
 import moment from 'moment';
 
 const mapStateToProps = function (store) {
@@ -20,7 +21,6 @@ class App extends Component {
 		super(props);
 
 		console.log("app props", props);
-
 		const columnFormatter = (cell, rowData, rowIdx, extraFormatData) => {
 
 			if (extraFormatData.columnType === "testDetails") {
@@ -179,7 +179,8 @@ class App extends Component {
 			dataField: 'name',
 			text: 'Name',
 			sort:true,
-			editable: false
+			editable: false,
+			filter: textFilter()
 		}, {
 			dataField: 'experience',
 			text: 'Experience',
@@ -325,6 +326,7 @@ class App extends Component {
 							loading={this.state.loading}
 							onTableChange={this.handleTableChange}
 							defaultSorted={ this.defaultSorted }
+							filter={filterFactory()}
 						/>
 					</div>
         		</div>
