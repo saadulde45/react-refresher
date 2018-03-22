@@ -7,10 +7,10 @@ import overlayFactory from 'react-bootstrap-table2-overlay';
 
 const CandidateTable = (props) => {
 
-    const { columns, data, keyField, loading, onTableChange, defaultSorted } = props;
+    const { columns, data, keyField, loading, onTableChange, defaultSorted, mobile } = props;
 
     const cellEdit = cellEditFactory({
-        mode: 'dbclick'
+        mode: mobile ? 'click' : 'dbclick'
     });
 
     return (

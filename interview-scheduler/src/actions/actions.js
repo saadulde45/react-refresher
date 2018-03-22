@@ -3,4 +3,9 @@ const getCandidates = (candidates) => ({
     payload: candidates
 });
 
+export const updateTestScore = (newData) => ({
+    type: "UPDATE_TEST_SCORE",
+    payload: newData
+});
+
 export default getCandidates;
