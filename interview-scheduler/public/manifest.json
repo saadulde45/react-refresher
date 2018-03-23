@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Interview Scheduler",
+  "name": "Create React App Interview Scheduler",
   "icons": [
     {
       "src": "favicon.ico",
@@ -9,6 +9,5 @@
     }
   ],
   "start_url": "./index.html",
-  "display": "standalone",
   "theme_color": "#000000"
 }
