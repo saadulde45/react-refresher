@@ -330,6 +330,23 @@ class App extends Component {
 			order: 'asc'
 		}];
 
+		//Dropdown pagination option to show no of records per page 
+		const sizePerPageListOptions = [{text:'10',value:10},
+										{text:'20',value:20},
+										{text:'30',value:30},
+										{text:'40',value:40},
+										{text:'50',value:50}]
+		//pagination constant options...
+		this.paginationOptions = {
+			paginationSize: 10,  
+			pageStartIndex: 1,
+			firstPageText: 'First',
+			prePageText: 'Back',
+			nextPageText: '>',
+			lastPageText: '<',
+			sizePerPageList: sizePerPageListOptions
+		}
+
 		this.state = {
 			loading: true,
 			mobile: false
@@ -373,6 +390,7 @@ class App extends Component {
 
 	render() {
 		return (
+
 			<div className="container main">
 				<div className="row">
 					<div className="col-md-12">
@@ -390,6 +408,7 @@ class App extends Component {
 							onTableChange={this.handleTableChange}
 							defaultSorted={this.defaultSorted}
 							mobile={this.state.mobile}
+							paginationOptions={this.paginationOptions}
 							filter={filterFactory()}
 						/>
 					</div>
