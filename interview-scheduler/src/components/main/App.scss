@@ -16,12 +16,16 @@ body, table, td, tr, div, input, form, textarea, select {
         border:solid 1px #ccc;
         margin-top:20px;
         margin-bottom:20px;
+        min-width: 1280px;
     }
 }
 table.table {
     &.table-bordered {
         th {
             background: #f0f0f0;
+        }
+        td {
+            vertical-align: middle;
         }
     }
 }
@@ -37,11 +41,9 @@ h1 {
     }
 }
 .rejected {
-    font-weight: 800;
     color: #d20000;
 }
 .selected {
-    font-weight: 800;
     color: #2f6a00;
 }
 
@@ -58,6 +60,7 @@ only screen and (max-width: 1024px)  {
         &.main {
             background: #fff;
             padding: 20px 40px 40px;
+            min-width: 320px;
         }
     }
 	/* Force table to not be like tables anymore */

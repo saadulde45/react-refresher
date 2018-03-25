@@ -29,9 +29,9 @@ class App extends Component {
 			let updatedData = this.state.data.map(row => {
 				if (row.emailId === id) {
 					if (scoreValue === null) {
-						row[column.columnType]["startTime"] = moment().format("YYYY-MM-DD HH:MM:SS");
+						row[column.columnType]["startTime"] = moment().format("YYYY-MM-DD HH:MM:ss");
 					} else {
-						row[column.columnType]["endTime"] = moment().format("YYYY-MM-DD HH:MM:SS");
+						row[column.columnType]["endTime"] = moment().format("YYYY-MM-DD HH:MM:ss");
 					}
 				}
 				return row;
@@ -126,32 +126,40 @@ class App extends Component {
 			if (extraFormatData.columnType === "gkDetails") {
 				switch (extraFormatData.columnField) {
 					case "score":
-						if (rowData.testDetails.score >= 3 && rowData.l1Details.score >= 3) {
-							if (rowData.gkDetails.score !== null) {
-								return (<span className="score_style">{rowData.gkDetails.score}</span>);
-							} else {
+						if (rowData.l1Details.score >= 3) {
+							if (rowData.gkDetails.startTime.length === 0) {
 								return (
-									<button className="btn btn-primary btn-sm">Schedule GK</button>
+									<button className="btn btn-primary btn-sm"
+										onClick={() => { startInterview(extraFormatData, rowData.gkDetails.score, rowData.emailId) }}
+									>Schedule GK</button>
 								);
+							} else if (rowData.gkDetails.startTime.length !== 0 && rowData.gkDetails.endTime.length === 0) {
+								return (
+									<button className="btn btn-success btn-sm"
+										onClick={() => { startInterview(extraFormatData, rowData.gkDetails.score, rowData.emailId) }}
+									>Finish Interview</button>
+								);
+							} else {
+								return (<span className="score_style">{rowData.gkDetails.score}</span>);
 							}
 						} else {
 							return (<span className='na-style'>NA</span>);
 						}
 					case "status":
-						if (rowData.testDetails.score >= 3 && rowData.l1Details.score >= 3) {
-							if (rowData.gkDetails.score !== null) {
-								if (rowData.gkDetails.score >= 3) {
-									return (
-										<span>
-											<span className="small">Selected in</span><br />
-											<i className="far fa-clock"></i> {timer(rowData.gkDetails.startTime, rowData.gkDetails.endTime)} mins
-                                  		</span>
-									);
-								} else {
-									return (<span className='rejected'><i className="fas fa-times-circle"></i>  Rejected</span>);
-								}
+						if (rowData.l1Details.score >= 3 && rowData.gkDetails.score !== null) {
+
+							if (rowData.gkDetails.startTime.length !== 0 && rowData.gkDetails.endTime.length === 0) {
+								return (
+									<span><span className="small">Started at</span><br /> <i className="far fa-clock"></i> {moment(rowData.gkDetails.startTime).format("HH:mm:ss")}</span>
+								);
+							} else if (rowData.gkDetails.score >= 3) {
+								return (
+									<span>
+										<span className="small">Selected in </span><br /> <i className="far fa-clock"></i> {timer(rowData.gkDetails.startTime, rowData.gkDetails.endTime)} mins
+								</span>
+								);
 							} else {
-								return (<span className='na-style'>NA</span>);
+								return (<span className='rejected'><i className="fas fa-times-circle"></i> Rejected</span>);
 							}
 						} else {
 							return (<span className='na-style'>NA</span>);
@@ -285,7 +293,7 @@ class App extends Component {
 			sort: true,
 			style: cellStyles,
 			validator: scoreValidation,
-			editable: (content, rowData, rowIndex, columnIndex) => {
+			editable: (content, rowData) => {
 				return rowData.testDetails.score >= 3;
 			},
 			formatter: columnFormatter,
@@ -329,6 +337,30 @@ class App extends Component {
 			formatExtraData: {
 				"columnType": "gkDetails",
 				"columnField": "status"
+			}
+		}, {
+			dataField: 'finalResult.status',
+			text: 'Final Status',
+			sort: true,
+			style: cellStyles,
+			editable: false,
+			// formatter: columnFormatter,
+			// formatExtraData: {
+			// 	"columnType": "finalResult",
+			// 	"columnField": "status"
+			// }
+		}, {
+			dataField: 'finalResult.seniority',
+			text: 'Seniority',
+			sort: true,
+			style: cellStyles,
+			editable: (content, rowData) => {
+				return rowData.gkDetails.score >= 3;
+			// },
+			// formatter: columnFormatter,
+			// formatExtraData: {
+			// 	"columnType": "finalResult",
+			// 	"columnField": "status"
 			}
 		}];
 
