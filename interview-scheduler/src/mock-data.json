@@ -11,8 +11,8 @@
       "emailId": "Noah@gmail.com",
       "experience": 4.5,
       "testDetails": {
-        "startTime": "2018-03-16 11:50:00",
-        "endTime": "2018-03-16 12:50:00",
+        "startTime": "2018-03-25 11:50:00",
+        "endTime": "2018-03-25 12:50:00",
         "score": 2
       },
       "l1Details": {
@@ -86,14 +86,14 @@
       "emailId": "Jacob@gmail.com",
       "experience": 7,
       "testDetails": {
-        "startTime": "2018-03-12 11:50:00",
-        "endTime": "2018-03-12 12:50:00",
+        "startTime": "2018-03-25 11:50:00",
+        "endTime": "2018-03-25 12:50:00",
         "score": 3.2
       },
       "l1Details": {
-        "startTime": "2018-03-13 10:50:00",
+        "startTime": "",
         "endTime": "",
-        "score": 0
+        "score": null
       },
       "gkDetails": {
         "startTime": "",
@@ -111,13 +111,13 @@
       "emailId": "William@gmail.com",
       "experience": 5.5,
       "testDetails": {
-        "startTime": "2018-03-17 11:50:00",
-        "endTime": "2018-03-17 12:50:00",
+        "startTime": "2018-03-25 11:50:00",
+        "endTime": "2018-03-25 12:50:00",
         "score": 5
       },
       "l1Details": {
-        "startTime": "2018-03-18 09:50:00",
-        "endTime": "2018-03-18 12:50:00",
+        "startTime": "2018-03-25 09:50:00",
+        "endTime": "2018-03-25 12:50:00",
         "score": 3.8
       },
       "gkDetails": {
@@ -136,13 +136,13 @@
       "emailId": "Ethan@gmail.com",
       "experience": 1.5,
       "testDetails": {
-        "startTime": "2018-03-16 11:50:00",
-        "endTime": "2018-03-16 12:50:00",
+        "startTime": "2018-03-25 11:50:00",
+        "endTime": "2018-03-25 12:50:00",
         "score": 3
       },
       "l1Details": {
-        "startTime": "2018-03-19 16:50:00",
-        "endTime": "2018-03-19 17:50:00",
+        "startTime": "2018-03-25 16:50:00",
+        "endTime": "2018-03-25 17:50:00",
         "score": 2
       },
       "gkDetails": {
@@ -171,9 +171,9 @@
         "score": 3.8
       },
       "gkDetails": {
-        "startTime": "2018-03-18 11:50:00",
+        "startTime": "",
         "endTime": "",
-        "score": 0
+        "score": null
       },
       "finalResult": {
         "status": "",
@@ -186,18 +186,18 @@
       "emailId": "Alexander@gmail.com",
       "experience": 3.5,
       "testDetails": {
-        "startTime": "2018-03-16 11:50:00",
-        "endTime": "2018-03-16 12:50:00",
+        "startTime": "2018-03-25 11:50:00",
+        "endTime": "2018-03-25 12:50:00",
         "score": 5
       },
       "l1Details": {
-        "startTime": "2018-03-16 13:50:00",
-        "endTime": "2018-03-16 14:50:00",
+        "startTime": "2018-03-25 13:50:00",
+        "endTime": "2018-03-25 14:50:00",
         "score": 3
       },
       "gkDetails": {
-        "startTime": "2018-03-16 15:00:00",
-        "endTime": "2018-03-16 17:00:00",
+        "startTime": "2018-03-25 15:00:00",
+        "endTime": "2018-03-25 17:00:00",
         "score": 2
       },
       "finalResult": {
@@ -236,8 +236,8 @@
       "emailId": "Elijah@gmail.com",
       "experience": 4,
       "testDetails": {
-        "startTime": "2018-03-16 11:50:00",
-        "endTime": "2018-03-16 12:50:00",
+        "startTime": "2018-03-25 11:50:00",
+        "endTime": "2018-03-25 12:50:00",
         "score": 3
       },
       "l1Details": {
@@ -261,14 +261,14 @@
       "emailId": "Emma@gmail.com",
       "experience": 4.5,
       "testDetails": {
-        "startTime": "2018-03-16 11:50:00",
-        "endTime": "2018-03-16 12:50:00",
+        "startTime": "2018-03-25 11:50:00",
+        "endTime": "2018-03-25 12:50:00",
         "score": 3
       },
       "l1Details": {
-        "startTime": "2018-03-18 21:50:00",
+        "startTime": "",
         "endTime": "",
-        "score": 0
+        "score": null
       },
       "gkDetails": {
         "startTime": "",
@@ -286,19 +286,19 @@
       "emailId": "Olivia@gmail.com",
       "experience": 4.5,
       "testDetails": {
-        "startTime": "2018-03-16 11:50:00",
-        "endTime": "2018-03-16 12:50:00",
+        "startTime": "2018-03-25 11:50:00",
+        "endTime": "2018-03-25 12:50:00",
         "score": 3
       },
       "l1Details": {
-        "startTime": "2018-03-16 11:50:00",
-        "endTime": "2018-03-16 12:50:00",
+        "startTime": "2018-03-25 11:50:00",
+        "endTime": "2018-03-25 12:50:00",
         "score": 3
       },
       "gkDetails": {
-        "startTime": "2018-03-16 11:50:00",
+        "startTime": "",
         "endTime": "",
-        "score": 0
+        "score": null
       },
       "finalResult": {
         "status": "",
@@ -311,19 +311,19 @@
       "emailId": "Sophia@gmail.com",
       "experience": 4,
       "testDetails": {
-        "startTime": "2018-03-16 11:50:00",
-        "endTime": "2018-03-16 12:50:00",
+        "startTime": "2018-03-25 11:50:00",
+        "endTime": "2018-03-25 12:50:00",
         "score": 3.5
       },
       "l1Details": {
-        "startTime": "2018-03-16 11:50:00",
-        "endTime": "2018-03-16 12:50:00",
+        "startTime": "2018-03-25 11:50:00",
+        "endTime": "2018-03-25 12:50:00",
         "score": 3
       },
       "gkDetails": {
-        "startTime": "2018-03-16 11:50:00",
+        "startTime": "",
         "endTime": "",
-        "score": 0
+        "score": null
       },
       "finalResult": {
         "status": "",
@@ -336,23 +336,23 @@
       "emailId": "Isabella@gmail.com",
       "experience": 4,
       "testDetails": {
-        "startTime": "2018-03-16 11:50:00",
-        "endTime": "2018-03-16 12:50:00",
-        "score": 2
+        "startTime": "2018-03-25 11:50:00",
+        "endTime": "2018-03-25 12:50:00",
+        "score": 3
       },
       "l1Details": {
-        "startTime": "",
-        "endTime": "",
-        "score": null
+        "startTime": "2018-03-25 13:00:00",
+        "endTime": "2018-03-25 13:50:00",
+        "score": 3
       },
       "gkDetails": {
-        "startTime": "",
-        "endTime": "",
-        "score": null
+        "startTime": "2018-03-25 14:00:00",
+        "endTime": "2018-03-25 16:50:00",
+        "score": 4
       },
       "finalResult": {
-        "status": "Test Rejected",
-        "seniority": ""
+        "status": "GK Selected",
+        "seniority": "TD"
       }
     },
     {
@@ -361,8 +361,8 @@
       "emailId": "Ava@gmail.com",
       "experience": 4,
       "testDetails": {
-        "startTime": "2018-03-16 11:50:00",
-        "endTime": "2018-03-16 12:50:00",
+        "startTime": "2018-03-25 11:50:00",
+        "endTime": "2018-03-25 12:50:00",
         "score": 3
       },
       "l1Details": {
@@ -386,17 +386,17 @@
       "emailId": "Mia@gmail.com",
       "experience": 4.5,
       "testDetails": {
-        "startTime": "2018-03-16 11:50:00",
-        "endTime": "2018-03-16 12:50:00",
+        "startTime": "2018-03-25 11:50:00",
+        "endTime": "2018-03-25 12:50:00",
         "score": 10
       },
       "l1Details": {
-        "startTime": "2018-03-18 21:50:00",
+        "startTime": "2018-03-25 21:50:00",
         "endTime": "",
         "score": null
       },
       "gkDetails": {
-        "startTime": "2018-03-16 11:50:00",
+        "startTime": "2018-03-25 11:50:00",
         "endTime": "",
         "score": null
       },
@@ -411,18 +411,18 @@
       "emailId": "Abigail@gmail.com",
       "experience": 4.5,
       "testDetails": {
-        "startTime": "2018-03-16 11:50:00",
-        "endTime": "2018-03-16 12:50:00",
+        "startTime": "2018-03-25 11:50:00",
+        "endTime": "2018-03-25 12:50:00",
         "score": 3
       },
       "l1Details": {
-        "startTime": "2018-03-16 11:50:00",
-        "endTime": "2018-03-16 12:50:00",
+        "startTime": "2018-03-25 11:50:00",
+        "endTime": "2018-03-25 12:50:00",
         "score": 3
       },
       "gkDetails": {
-        "startTime": "2018-03-17 11:50:00",
-        "endTime": "2018-03-17 13:50:00",
+        "startTime": "2018-03-25 11:50:00",
+        "endTime": "2018-03-25 13:50:00",
         "score": 3
       },
       "finalResult": {
@@ -436,13 +436,13 @@
       "emailId": "Emily@gmail.com",
       "experience": 4,
       "testDetails": {
-        "startTime": "2018-03-16 11:50:00",
-        "endTime": "2018-03-16 12:50:00",
+        "startTime": "2018-03-25 11:50:00",
+        "endTime": "2018-03-25 12:50:00",
         "score": 3.5
       },
       "l1Details": {
-        "startTime": "2018-03-16 11:50:00",
-        "endTime": "2018-03-16 12:50:00",
+        "startTime": "2018-03-25 11:50:00",
+        "endTime": "2018-03-25 12:50:00",
         "score": 3
       },
       "gkDetails": {
@@ -461,8 +461,8 @@
       "emailId": "Harper@gmail.com",
       "experience": 4,
       "testDetails": {
-        "startTime": "2018-03-16 11:50:00",
-        "endTime": "2018-03-16 12:50:00",
+        "startTime": "2018-03-25 11:50:00",
+        "endTime": "2018-03-25 12:50:00",
         "score": 2
       },
       "l1Details": {
@@ -486,8 +486,8 @@
       "emailId": "Elizabeth@gmail.com",
       "experience": 4,
       "testDetails": {
-        "startTime": "2018-03-16 11:50:00",
-        "endTime": "2018-03-16 12:50:00",
+        "startTime": "2018-03-25 11:50:00",
+        "endTime": "2018-03-25 12:50:00",
         "score": 3
       },
       "l1Details": {

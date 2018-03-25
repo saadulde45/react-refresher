@@ -168,6 +168,48 @@ class App extends Component {
 				}
 
 			}
+
+			if (extraFormatData.columnType === "finalResult") {
+				switch (extraFormatData.columnField) {
+					case "status":
+						if (rowData.testDetails.score !== null) {
+							if (rowData.testDetails.score < 3) {
+								//test reject
+								return (<span className="score_style">Test Rejected</span>);
+							} else {
+								//test selected
+								if (rowData.l1Details.score !== null) {
+									if (rowData.testDetails.score < 3) {
+										//l1 reject
+										return (<span className="score_style">L1 Rejected</span>);
+									} else {
+										// l1 selected
+										if (rowData.gkDetails.score !== null) {
+											if (rowData.gkDetails.score < 3) {
+												//gk reject
+												return (<span className="score_style">GK Rejected</span>);
+											} else if (rowData.gkDetails.score !== null) {
+												// gk selected
+												return (<span className="score_style">GK Selected</span>);
+											}
+										}
+										return (<span className="score_style">L1 Selected</span>);
+									}
+								}
+								return (<span className="score_style">Test Selected</span>);
+							}
+						} else {
+							return (<span className='na-style'>NA</span>);
+						}
+					case 'seniority':
+						if (!rowData.gkDetails.score) {
+							return (<span className='na-style'>NA</span>);
+						} else {
+							return (<span>{rowData.finalResult.seniority}</span>);
+						}
+					default: break;
+				}
+			}
 		};
 
 		function updateCellBackground(cellValue) {
@@ -344,11 +386,11 @@ class App extends Component {
 			sort: true,
 			style: cellStyles,
 			editable: false,
-			// formatter: columnFormatter,
-			// formatExtraData: {
-			// 	"columnType": "finalResult",
-			// 	"columnField": "status"
-			// }
+			formatter: columnFormatter,
+			formatExtraData: {
+				"columnType": "finalResult",
+				"columnField": "status"
+			}
 		}, {
 			dataField: 'finalResult.seniority',
 			text: 'Seniority',
@@ -356,11 +398,11 @@ class App extends Component {
 			style: cellStyles,
 			editable: (content, rowData) => {
 				return rowData.gkDetails.score >= 3;
-			// },
-			// formatter: columnFormatter,
-			// formatExtraData: {
-			// 	"columnType": "finalResult",
-			// 	"columnField": "status"
+			},
+			formatter: columnFormatter,
+			formatExtraData: {
+				"columnType": "finalResult",
+				"columnField": "seniority"
 			}
 		}];
 
