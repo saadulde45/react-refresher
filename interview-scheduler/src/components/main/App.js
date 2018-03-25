@@ -2,11 +2,17 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import './App.scss';
 import { bindActionCreators } from 'redux';
-import getCandidates, { updateTestScore } from "../../actions/actions";
+import getCandidates, { updateTestScore, updateL1Score, updateL1Status, updateGKScore, updateGKStatus } from "../../actions/actions";
 import CandidateTable from '../candidate-table/candidate-table';
 import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
 import moment from 'moment';
 import _ from 'underscore';
+import paginationFactory from 'react-bootstrap-table2-paginator';
+import overlayFactory from 'react-bootstrap-table2-overlay';
+import timer, { scoreValidation } from '../common/utility';
+import Field from '../common/Field';
+import Button from '../common/Button';
+import Constants from '../constants/constants';
 
 const mapStateToProps = function (store) {
 	return { candidates: store.candidatesRed.candidates }
@@ -15,7 +21,11 @@ const mapStateToProps = function (store) {
 function mapDispatchToProps(dispatch) {
 	return bindActionCreators({
 		getCandidates: getCandidates,
-		updateTestScore: updateTestScore
+		updateTestScore: updateTestScore,
+		updateL1Score: updateL1Score,
+		updateL1Status: updateL1Status,
+		updateGKScore: updateGKScore,
+		updateGKStatus: updateGKStatus
 	}, dispatch);
 }
 
@@ -24,97 +34,117 @@ class App extends Component {
 	constructor(props) {
 		super(props);
 
-		const startInterview = (column, scoreValue, id) => {
+		
+		
 
-			console.log("interview", scoreValue);
+		const startStopInterview = (column, scoreValue, id) => {
 
 			let updatedData = this.state.data.map(row => {
 				if (row.emailId === id) {
 					if (scoreValue === null) {
-						row[column.columnType]["startTime"] = moment().format("YYYY-MM-DD HH:MM:SS");
+						row[column.columnType]["startTime"] = moment().format(Constants.DATE_FORMAT);
 					} else {
-						row[column.columnType]["endTime"] = moment().format("YYYY-MM-DD HH:MM:SS");
+						row[column.columnType]["endTime"] = moment().format(Constants.DATE_FORMAT);
 					}
 				}
 				return row;
 			});
 
-			let temp = {
-				cellEdit: {
-					dataField: column.columnType + "." + column.columnField,
-					rowId: id,
-					newValue: scoreValue ? scoreValue : 0
-				},
-				data: updatedData
+			if (scoreValue !== 0) {
+				let temp = {
+					cellEdit: {
+						dataField: column.columnType + "." + column.columnField,
+						rowId: id,
+						newValue: scoreValue ? scoreValue : 0
+					},
+					data: updatedData
+				}
+
+				if (column.columnType === "l1Details") {
+					this.props.updateL1Status(temp);
+				} else {
+					this.props.updateGKStatus(temp);
+				}
 			}
-			this.handleTableChange("cellEdit", temp);
 		}
 
-		const candidateName = (cell, rowData, rowIdx, extraFormatData) => {
-			return (<span className='candidateName'>{rowData.name}</span>);
+		const candidateName = (cell, rowData) => {
+			return (<Field className="candidateName" text={rowData.name} />);
 		};
 
 		const columnFormatter = (cell, rowData, rowIdx, extraFormatData) => {
-			//selectOptions[cell]
+
 			if (extraFormatData.columnType === "testDetails") {
 				switch (extraFormatData.columnField) {
-					case "score":		
+					case "score":
 						if (rowData.testDetails.score !== null) {
-							return (<span className="score_style">{rowData.testDetails.score}</span>);							
+							return (<Field className="score_style" text={rowData.testDetails.score} />);
 						} else {
-							return "Enter score";							
+							return (<Field text={Constants.BLANK_SCORE_TEXT} />);
 						}
 					case "status":
 						if (rowData.testDetails.score === null) {
-							return (<span className='na-style'>NA</span>);
-						} else if (rowData.testDetails.score < 3) {
-							return ( <span className='rejected'><i class="fas fa-times-circle"></i> Rejected</span> );;
+							return (<Field className="na-style" text={Constants.NA} />);
+						} else if (rowData.testDetails.score < Constants.PASS_THRESHOLD) {
+							return (<Field className="rejected" text={Constants.REJECTED} renderTextAfterChild="false"><i className="fas fa-times-circle"></i></Field>);
 						} else {
-							return ( <span className='selected'><i class="fas fa-check-circle"></i> Selected</span> );;
+							return (<Field className="selected" text={Constants.SELECTED} renderTextAfterChild="false"><i className="fas fa-times-circle"></i></Field>);
 						}
-					default : break;	
+					default: break;
 				};
 			}
 
 			if (extraFormatData.columnType === "l1Details") {
 				switch (extraFormatData.columnField) {
 					case "score":
-						if (rowData.testDetails.score >= 3) {
+						if (rowData.testDetails.score >= Constants.PASS_THRESHOLD) {
 							if (rowData.l1Details.startTime.length === 0) {
 								return (
-									<button className="btn btn-primary btn-sm"
-										onClick={() => { startInterview(extraFormatData, rowData.l1Details.score, rowData.emailId) }}
-									>Schedule L1</button>
+									<Button
+										className="btn btn-primary btn-sm"
+										text={Constants.SCHEDULE_L1}
+										onClick={() => { startStopInterview(extraFormatData, rowData.l1Details.score, rowData.emailId) }}
+									/>
 								);
 							} else if (rowData.l1Details.startTime.length !== 0 && rowData.l1Details.endTime.length === 0) {
 								return (
-									<button className="btn btn-success btn-sm">Finish Interview</button>
+									<Button
+										className="btn btn-primary btn-sm"
+										text={Constants.FINISH_INTERVIEW}
+										onClick={() => { startStopInterview(extraFormatData, rowData.l1Details.score, rowData.emailId) }}
+									/>
 								);
 							} else {
-								return (<span className="score_style">{rowData.l1Details.score}</span>);
+								return (<Field className="score_style" text={rowData.l1Details.score} />);
 							}
 						} else {
-							return (<span className='na-style'>NA</span>);
+							return (<Field className="na-style" text={Constants.NA} />);
 						}
 					case "status":
-						console.log("score", rowData.l1Details.score);
-						if (rowData.testDetails.score >= 3 && rowData.l1Details.score !== null) {
+
+						if (rowData.testDetails.score >= Constants.PASS_THRESHOLD && rowData.l1Details.score !== null) {
 
 							if (rowData.l1Details.startTime.length !== 0 && rowData.l1Details.endTime.length === 0) {
 								return (
-									<span><span className="small">Started at</span><br/> <i class="far fa-clock"></i> {moment(rowData.l1Details.startTime).format("HH:mm:ss")}</span>
+									<Field className="small" text={Constants.STARTED_AT}>
+										<br /> <i className="far fa-clock"></i> {moment(rowData.l1Details.startTime).format(Constants.COMPACT_DATE_FORMAT)}
+									</Field>
 								);
-							} else if (rowData.l1Details.score >= 3) {
+							} else if (rowData.l1Details.score >= Constants.PASS_THRESHOLD) {
 								return (
-									<span>
-										<span className="small">Selected in </span><br/> <i class="far fa-clock"></i> {timer(rowData.l1Details.startTime, rowData.l1Details.endTime)} mins
-                            		</span>
+									<Field className="small" text={Constants.SELECTED_IN}>
+										<br /> <i className="far fa-clock"></i> {timer(rowData.l1Details.startTime, rowData.l1Details.endTime)} {Constants.MINUTES}
+									</Field>
 								);
 							} else {
-								return (<span className='rejected'><i class="fas fa-times-circle"></i> Rejected</span>);
+								return (
+									<Field className="small" text={Constants.REJECTED_IN}>
+										<br /> <i className="far fa-clock"></i> {timer(rowData.l1Details.startTime, rowData.l1Details.endTime)} {Constants.MINUTES}
+									</Field>
+								);
 							}
 						} else {
-							return (<span className='na-style'>NA</span>);
+							return (<Field className="na-style" text={Constants.NA} />);
 						}
 					default: break;
 				}
@@ -124,140 +154,130 @@ class App extends Component {
 			if (extraFormatData.columnType === "gkDetails") {
 				switch (extraFormatData.columnField) {
 					case "score":
-						if (rowData.testDetails.score >= 3 && rowData.l1Details.score >= 3) {
-							if (rowData.gkDetails.score !== null) {
-								return (<span className="score_style">{rowData.gkDetails.score}</span>);
+						if (rowData.l1Details.score >= Constants.PASS_THRESHOLD) {
+							if (rowData.gkDetails.startTime.length === 0) {
+								return (
+									<Button
+										className="btn btn-primary btn-sm"
+										text={Constants.SCHEDULE_GK}
+										onClick={() => { startStopInterview(extraFormatData, rowData.gkDetails.score, rowData.emailId) }}
+									/>
+								);
+							} else if (rowData.gkDetails.startTime.length !== 0 && rowData.gkDetails.endTime.length === 0) {
+								return (
+									<Button
+										className="btn btn-primary btn-sm"
+										text={Constants.FINISH_INTERVIEW}
+										onClick={() => { startStopInterview(extraFormatData, rowData.gkDetails.score, rowData.emailId) }}
+									/>
+								);
+							} else {
+								return (<Field className="score_style" text={rowData.gkDetails.score} />);
+							}
+						} else {
+							return (<Field className="na-style" text={Constants.NA} />);
+						}
+					case "status":
+						if (rowData.l1Details.score >= Constants.PASS_THRESHOLD && rowData.gkDetails.score !== null) {
+
+							if (rowData.gkDetails.startTime.length !== 0 && rowData.gkDetails.endTime.length === 0) {
+								return (
+									<Field className="small" text={Constants.STARTED_AT}>
+										<br /> <i className="far fa-clock"></i> {moment(rowData.gkDetails.startTime).format(Constants.COMPACT_DATE_FORMAT)}
+									</Field>
+								);
+							} else if (rowData.gkDetails.score >= Constants.PASS_THRESHOLD) {
+								return (
+									<Field className="small" text={Constants.SELECTED_IN}>
+										<br /> <i className="far fa-clock"></i> {timer(rowData.gkDetails.startTime, rowData.gkDetails.endTime)} {Constants.MINUTES}
+									</Field>
+								);
 							} else {
 								return (
-									<button className="btn btn-primary btn-sm">Schedule GK</button>
+									<Field className="small" text={Constants.REJECTED_IN}>
+										<br /> <i className="far fa-clock"></i> {timer(rowData.gkDetails.startTime, rowData.gkDetails.endTime)} {Constants.MINUTES}
+									</Field>
 								);
 							}
 						} else {
-							return (<span className='na-style'>NA</span>);
-						}
-					case "status":
-						if (rowData.testDetails.score >= 3 && rowData.l1Details.score >= 3) {
-							if (rowData.gkDetails.score !== null) {
-								if (rowData.gkDetails.score >= 3) {
-									return (
-										<span>
-											<span className="small">Selected in</span><br/>
-											<i class="far fa-clock"></i> {timer(rowData.gkDetails.startTime, rowData.gkDetails.endTime)} mins
-                                  		</span>
-									);
-								} else {
-									return (<span className='rejected'><i class="fas fa-times-circle"></i>  Rejected</span>);
-								}
-							} else {
-								return (<span className='na-style'>NA</span>);
-							}
-						} else {
-							return (<span className='na-style'>NA</span>);
+							return (<Field className="na-style" text={Constants.NA} />);
 						}
 					default: break;
 				}
 
 			}
+
+			if (extraFormatData.columnType === "finalResult") {
+				switch (extraFormatData.columnField) {
+					case "status":
+						if (rowData.testDetails.score !== null) {
+							if (rowData.testDetails.score < Constants.PASS_THRESHOLD) {
+								//test reject
+								return (<Field className="score_style" text={Constants.TEST_REJECTED} />);
+							} else {
+								//test selected
+								if (rowData.l1Details.score !== null) {
+									if (rowData.l1Details.score === 0) {
+										//l1 in progress
+										return (<Field className="score_style" text={Constants.L1_IN_PROGRESS} />);
+									} else if (rowData.testDetails.score < Constants.PASS_THRESHOLD && rowData.l1Details.endTime.length !== 0) {
+										//l1 reject
+										return (<Field className="score_style" text={Constants.L1_REJECTED} />);
+									} else {
+										// l1 selected
+										if (rowData.gkDetails.score !== null) {
+											if (rowData.gkDetails.score === 0) {
+												//gk in progress
+												return (<Field className="score_style" text={Constants.GK_IN_PROGRESS} />);
+											} else if (rowData.gkDetails.score < Constants.PASS_THRESHOLD && rowData.gkDetails.endTime.length !== 0) {
+												//gk reject
+												return (<Field className="score_style" text={Constants.GK_REJECTED} />);
+											} else if (rowData.gkDetails.score !== null) {
+												// gk selected
+												return (<Field className="score_style" text={Constants.GK_SELECTED} />);
+											}
+										}
+										return (<Field className="score_style" text={Constants.L1_SELECTED} />);
+									}
+								}
+								return (<Field className="score_style" text={Constants.TEST_SELECTED} />);
+							}
+						} else {
+							return (<Field className="score_style na-style" text={Constants.NA} />);
+						}
+					case 'seniority':
+						if (!rowData.gkDetails.score || rowData.gkDetails.score < Constants.PASS_THRESHOLD) {
+							return (<Field className="score_style na-style" text={Constants.NA} />);
+						} else {
+							return (<Field className="score_style" text={rowData.finalResult.seniority} />);
+						}
+					default: break;
+				}
+			}
 		};
-
-		function updateCellBackground(cellValue) {
-			if (cellValue === 0 || cellValue === null) {
-				//return '#f0f0f0'
-			} else if (cellValue < 3) {
-				//return '#ffdada'
-			} else if (cellValue >= 3 && cellValue <= 5) {
-				//return '#e6ffc4'
-			} else {
-				//return '#FF7F50'
-			}
-		}
-
-		function timer(startTime, endTime) {
-			let start = new moment(startTime);
-			let end = new moment();
-
-			if (endTime !== null && endTime.length !== 0) {
-				end = new moment(endTime);
-			}
-			let duration = moment.duration(end.diff(start));
-			return duration.asMinutes();
-		}
-
-		const scoreValidation = (newValue, row, column) => {
-			if (isNaN(newValue) || newValue < 1 || newValue > 5) {
-				return {
-					valid: false,
-					message: 'The value should be number and in the range of 1 - 5'
-				};
-			} else {
-				return true;
-			}
-		}
-
-		const cellStyles = (content, rowData, rowIndex, colIndex) => {
-			let score = 0;
-			switch (colIndex) {
-
-				case 2:
-				case 3:
-					if (rowData.testDetails.score === null) {
-						score = 0;
-					} else {
-						score = rowData.testDetails.score;
-					}			
-					return {
-						backgroundColor: updateCellBackground(score)
-					};
-
-				case 4:
-				case 5:
-					if (rowData.testDetails.score < 3 || rowData.l1Details.score === null) {
-						score = 0;
-					} else {
-						score = rowData.l1Details.score;
-					}
-					return {
-						backgroundColor: updateCellBackground(score)
-					};
-
-				case 6:
-				case 7:
-					if (rowData.testDetails.score < 3 || rowData.l1Details.score < 3 || rowData.gkDetails.score === null) {
-						score = 0;
-					} else {
-						score = rowData.gkDetails.score;
-					}
-					return {
-						backgroundColor: updateCellBackground(score)
-					};
-
-				default: break;
-			}
-		}
 
 		this.handleTableChange = this.handleTableChange.bind(this);
 
 		this.columns = [{
 			dataField: 'name',
-			text: 'Name',
+			text: Constants.NAME,
 			formatter: candidateName,
 			sort: true,
 			editable: false,
 			filter: textFilter()
 		}, {
 			dataField: 'experience',
-			text: 'Experience',
+			text: Constants.EXPERIENCE,
 			sort: true,
 			editable: false,
 			filter: textFilter()
 		}, {
 			dataField: 'testDetails.score',
-			text: 'Test Score',
+			text: Constants.TEST_SCORE,
 			sort: true,
-			style: cellStyles,
 			validator: scoreValidation,
-			editCellClasses: (cell, row, rowIndex, colIndex) => {
-				return (cell < 1 || cell > 5) ? 'has-error' : 'has-success';
+			editCellClasses: (cell, row) => {
+				return (cell < Constants.MIN_SCORE || cell > Constants.MAX_SCORE) ? 'has-error' : 'has-success';
 			},
 			formatter: columnFormatter,
 			formatExtraData: {
@@ -268,9 +288,8 @@ class App extends Component {
 
 		}, {
 			dataField: 'testDetails.startTime',
-			text: 'Test Status',
+			text: Constants.TEST_STATUS,
 			sort: true,
-			style: cellStyles,
 			editable: false,
 			formatter: columnFormatter,
 			formatExtraData: {
@@ -279,12 +298,11 @@ class App extends Component {
 			}
 		}, {
 			dataField: 'l1Details.score',
-			text: 'L1 Score',
+			text: Constants.L1_SCORE,
 			sort: true,
-			style: cellStyles,
 			validator: scoreValidation,
-			editable: (content, rowData, rowIndex, columnIndex) => {
-				return rowData.testDetails.score >= 3;
+			editable: (content, rowData) => {
+				return rowData.testDetails.score >= Constants.PASS_THRESHOLD;
 			},
 			formatter: columnFormatter,
 			formatExtraData: {
@@ -293,9 +311,8 @@ class App extends Component {
 			}
 		}, {
 			dataField: 'l1Details.startTime',
-			text: 'L1 Status',
+			text: Constants.L1_STATUS,
 			sort: true,
-			style: cellStyles,
 			editable: false,
 			formatter: columnFormatter,
 			formatExtraData: {
@@ -304,13 +321,12 @@ class App extends Component {
 			}
 		}, {
 			dataField: 'gkDetails.score',
-			text: 'GK Score',
+			text: Constants.GK_SCORE,
 			sort: true,
-			style: cellStyles,
 			validator: scoreValidation,
-			editable: (content, rowData, rowIndex, columnIndex) => {
-				return rowData.l1Details.score !== "NA" && rowData.testDetails.score >= 3
-					&& rowData.l1Details.score >= 3;
+			editable: (content, rowData) => {
+				return rowData.l1Details.score !== null && rowData.testDetails.score >= Constants.PASS_THRESHOLD
+					&& rowData.l1Details.score >= Constants.PASS_THRESHOLD;
 			},
 			formatter: columnFormatter,
 			formatExtraData: {
@@ -319,14 +335,35 @@ class App extends Component {
 			}
 		}, {
 			dataField: 'gkDetails.startTime',
-			text: 'GK Status',
+			text: Constants.GK_STATUS,
 			sort: true,
-			style: cellStyles,
 			editable: false,
 			formatter: columnFormatter,
 			formatExtraData: {
 				"columnType": "gkDetails",
 				"columnField": "status"
+			}
+		}, {
+			dataField: 'finalResult.status',
+			text: Constants.FINAL_STATUS,
+			sort: true,
+			editable: false,
+			formatter: columnFormatter,
+			formatExtraData: {
+				"columnType": "finalResult",
+				"columnField": "status"
+			}
+		}, {
+			dataField: 'finalResult.seniority',
+			text: Constants.SENIORITY,
+			sort: true,
+			editable: (content, rowData) => {
+				return rowData.gkDetails.score >= Constants.PASS_THRESHOLD;
+			},
+			formatter: columnFormatter,
+			formatExtraData: {
+				"columnType": "finalResult",
+				"columnField": "seniority"
 			}
 		}];
 
@@ -335,44 +372,50 @@ class App extends Component {
 			order: 'asc'
 		}];
 
-		//Dropdown pagination option to show no of records per page 
-		const sizePerPageListOptions = [{text:'10',value:10},
-										{text:'20',value:20},
-										{text:'30',value:30},
-										{text:'40',value:40},
-										{text:'50',value:50}]
+		
 		//pagination constant options...
-		this.paginationOptions = {
-			paginationSize: 10,  
-			pageStartIndex: 1,
-			firstPageText: 'First',
-			prePageText: 'Back',
+		this.paginationOptions = paginationFactory({
+			paginationSize: Constants.DEFAULT_PAGE_SIZE,
+			pageStartIndex: Constants.START_PAGE_INDEX,
+			firstPageText: Constants.PAGINATION_NEXT_TEXT,
+			prePageText: Constants.PAGINATION_PREVIOUS_TEXT,
 			nextPageText: '>',
 			lastPageText: '<',
-			sizePerPageList: sizePerPageListOptions
-		}
+			sizePerPageList: Constants.SIZE_PER_PAGE_LIST //Dropdown pagination option to show no of records per page 
+		});
 
 		this.state = {
 			loading: true,
 			mobile: false
 		};
+
+		this.overlay = overlayFactory({ spinner: true, background: Constants.SPINNER_COLOR })
+
 	}
 
 	handleTableChange(eventType, { cellEdit, data }) {
 
 		if (eventType === 'cellEdit') {
+			let column = cellEdit.dataField.split(".")[0];
 
-			let dataField = cellEdit.dataField.split('.');
-			let newData = data.map(row => {
-				if (row.emailId === cellEdit.rowId) {
-					if (cellEdit.dataField) {
-						row[dataField[0]][dataField[1]] = cellEdit.newValue;
-					}
-				}
-				return row;
-			});
-
-			this.props.updateTestScore(newData);
+			switch (column) {
+				case "testDetails":
+					this.props.updateTestScore({
+						cellEdit: cellEdit
+					});
+					break;
+				case "l1Details":
+					this.props.updateL1Score({
+						cellEdit: cellEdit
+					});
+					break;
+				case "gkDetails":
+					this.props.updateGKScore({
+						cellEdit: cellEdit
+					});
+					break;
+				default: break;
+			}
 		}
 	}
 
@@ -399,7 +442,7 @@ class App extends Component {
 			<div className="container main">
 				<div className="row">
 					<div className="col-md-12">
-						<h1 className="heading">Interview Scheduler</h1>
+						<h1 className="heading">{Constants.APP_TITLE}</h1>
 						<hr />
 					</div>
 				</div>
@@ -412,6 +455,12 @@ class App extends Component {
 							loading={this.state.loading}
 							onTableChange={this.handleTableChange}
 							defaultSorted={this.defaultSorted}
+							noDataIndication={() => {
+								if (!this.state.loading && this.state.data.length === 0) {
+									return (<div className="noData">{Constants.EMPTY_TABLE_TEXT}</div>);
+								}
+							}}
+							overlay={this.overlay}
 							mobile={this.state.mobile}
 							paginationOptions={this.paginationOptions}
 							filter={filterFactory()}
