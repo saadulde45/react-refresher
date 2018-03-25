@@ -1,21 +1,39 @@
 body {
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'Roboto', sans-serif;
     font-size: 100%;
     color: #000;
     line-height: 1.0em;
     background-color: #f0f0f0 !important;
 }
+body, table, td, tr, div, input, form, textarea, select {
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.0em;
+}
 .container {
     &.main {
         background: #fff;
         padding: 20px 60px 40px;
+        border:solid 1px #ccc;
+        margin-top:20px;
+        margin-bottom:20px;
     }
 }
+table.table {
+    &.table-bordered {
+        th {
+            background: #f0f0f0;
+        }
+    }
+}
+.na-style { color: #ccc;}
+.candidateName {font-weight: 600;}
+.score_style {font-weight: 400; font-size: 20px;}
 h1 {
     &.heading {
-        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        font-family: 'Roboto', sans-serif;
         font-size:36px;
-        font-weight:800;
+        font-weight:900;
+        color: #004bbc;
     }
 }
 .rejected {

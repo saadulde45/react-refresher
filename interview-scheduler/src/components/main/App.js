@@ -50,24 +50,27 @@ class App extends Component {
 			this.handleTableChange("cellEdit", temp);
 		}
 
-		
+		const candidateName = (cell, rowData, rowIdx, extraFormatData) => {
+			return (<span className='candidateName'>{rowData.name}</span>);
+		};
+
 		const columnFormatter = (cell, rowData, rowIdx, extraFormatData) => {
 			//selectOptions[cell]
 			if (extraFormatData.columnType === "testDetails") {
 				switch (extraFormatData.columnField) {
 					case "score":		
 						if (rowData.testDetails.score !== null) {
-							return rowData.testDetails.score;							
+							return (<span className="score_style">{rowData.testDetails.score}</span>);							
 						} else {
 							return "Enter score";							
 						}
 					case "status":
 						if (rowData.testDetails.score === null) {
-							return "NA";
+							return (<span className='na-style'>NA</span>);
 						} else if (rowData.testDetails.score < 3) {
-							return ( <span className='rejected'>Rejected</span> );;
+							return ( <span className='rejected'><i class="fas fa-times-circle"></i> Rejected</span> );;
 						} else {
-							return ( <span className='selected'>Selected</span> );;
+							return ( <span className='selected'><i class="fas fa-check-circle"></i> Selected</span> );;
 						}
 					default : break;	
 				};
@@ -79,19 +82,19 @@ class App extends Component {
 						if (rowData.testDetails.score >= 3) {
 							if (rowData.l1Details.startTime.length === 0) {
 								return (
-									<button className="btn btn-primary"
+									<button className="btn btn-primary btn-sm"
 										onClick={() => { startInterview(extraFormatData, rowData.l1Details.score, rowData.emailId) }}
 									>Schedule L1</button>
 								);
 							} else if (rowData.l1Details.startTime.length !== 0 && rowData.l1Details.endTime.length === 0) {
 								return (
-									<button className="btn btn-primary">Finish Interview</button>
+									<button className="btn btn-success btn-sm">Finish Interview</button>
 								);
 							} else {
-								return rowData.l1Details.score;
+								return (<span className="score_style">{rowData.l1Details.score}</span>);
 							}
 						} else {
-							return "NA";
+							return (<span className='na-style'>NA</span>);
 						}
 					case "status":
 						console.log("score", rowData.l1Details.score);
@@ -99,19 +102,19 @@ class App extends Component {
 
 							if (rowData.l1Details.startTime.length !== 0 && rowData.l1Details.endTime.length === 0) {
 								return (
-									<span>Started at {moment(rowData.l1Details.startTime).format("HH:mm:ss")}</span>
+									<span><span className="small">Started at</span><br/> <i class="far fa-clock"></i> {moment(rowData.l1Details.startTime).format("HH:mm:ss")}</span>
 								);
 							} else if (rowData.l1Details.score >= 3) {
 								return (
 									<span>
-										Selected {timer(rowData.l1Details.startTime, rowData.l1Details.endTime)} mins
+										<span className="small">Selected in </span><br/> <i class="far fa-clock"></i> {timer(rowData.l1Details.startTime, rowData.l1Details.endTime)} mins
                             		</span>
 								);
 							} else {
-								return (<span className='rejected'>Rejected</span>);
+								return (<span className='rejected'><i class="fas fa-times-circle"></i> Rejected</span>);
 							}
 						} else {
-							return "NA";
+							return (<span className='na-style'>NA</span>);
 						}
 					default: break;
 				}
@@ -123,14 +126,14 @@ class App extends Component {
 					case "score":
 						if (rowData.testDetails.score >= 3 && rowData.l1Details.score >= 3) {
 							if (rowData.gkDetails.score !== null) {
-								return rowData.gkDetails.score;
+								return (<span className="score_style">{rowData.gkDetails.score}</span>);
 							} else {
 								return (
-									<button className="btn btn-primary">Schedule GK</button>
+									<button className="btn btn-primary btn-sm">Schedule GK</button>
 								);
 							}
 						} else {
-							return "NA";
+							return (<span className='na-style'>NA</span>);
 						}
 					case "status":
 						if (rowData.testDetails.score >= 3 && rowData.l1Details.score >= 3) {
@@ -138,17 +141,18 @@ class App extends Component {
 								if (rowData.gkDetails.score >= 3) {
 									return (
 										<span>
-											Selected {timer(rowData.gkDetails.startTime, rowData.gkDetails.endTime)} mins
-                                  </span>
+											<span className="small">Selected in</span><br/>
+											<i class="far fa-clock"></i> {timer(rowData.gkDetails.startTime, rowData.gkDetails.endTime)} mins
+                                  		</span>
 									);
 								} else {
-									return (<span className='rejected'>Rejected</span>);
+									return (<span className='rejected'><i class="fas fa-times-circle"></i>  Rejected</span>);
 								}
 							} else {
-								return "NA";
+								return (<span className='na-style'>NA</span>);
 							}
 						} else {
-							return "NA";
+							return (<span className='na-style'>NA</span>);
 						}
 					default: break;
 				}
@@ -158,13 +162,13 @@ class App extends Component {
 
 		function updateCellBackground(cellValue) {
 			if (cellValue === 0 || cellValue === null) {
-				return '#f0f0f0'
+				//return '#f0f0f0'
 			} else if (cellValue < 3) {
-				return '#ffdada'
+				//return '#ffdada'
 			} else if (cellValue >= 3 && cellValue <= 5) {
-				return '#e6ffc4'
+				//return '#e6ffc4'
 			} else {
-				return '#FF7F50'
+				//return '#FF7F50'
 			}
 		}
 
@@ -236,7 +240,8 @@ class App extends Component {
 		this.columns = [{
 			dataField: 'name',
 			text: 'Name',
-			sort:true,
+			formatter: candidateName,
+			sort: true,
 			editable: false,
 			filter: textFilter()
 		}, {
