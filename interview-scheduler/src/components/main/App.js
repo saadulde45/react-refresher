@@ -4,6 +4,7 @@ import './App.scss';
 import { bindActionCreators } from 'redux';
 import getCandidates, { updateTestScore } from "../../actions/actions";
 import CandidateTable from '../candidate-table/candidate-table';
+import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
 import moment from 'moment';
 import _ from 'underscore';
 
@@ -49,7 +50,9 @@ class App extends Component {
 			this.handleTableChange("cellEdit", temp);
 		}
 
+		
 		const columnFormatter = (cell, rowData, rowIdx, extraFormatData) => {
+			//selectOptions[cell]
 			if (extraFormatData.columnType === "testDetails") {
 				switch (extraFormatData.columnField) {
 					case "score":		
@@ -233,13 +236,15 @@ class App extends Component {
 		this.columns = [{
 			dataField: 'name',
 			text: 'Name',
-			sort: true,
-			editable: false
+			sort:true,
+			editable: false,
+			filter: textFilter()
 		}, {
 			dataField: 'experience',
 			text: 'Experience',
 			sort: true,
-			editable: false
+			editable: false,
+			filter: textFilter()
 		}, {
 			dataField: 'testDetails.score',
 			text: 'Test Score',
@@ -253,7 +258,9 @@ class App extends Component {
 			formatExtraData: {
 				"columnType": "testDetails",
 				"columnField": "score"
-			}
+			},
+			filter: textFilter()
+
 		}, {
 			dataField: 'testDetails.startTime',
 			text: 'Test Status',
@@ -402,6 +409,7 @@ class App extends Component {
 							defaultSorted={this.defaultSorted}
 							mobile={this.state.mobile}
 							paginationOptions={this.paginationOptions}
+							filter={filterFactory()}
 						/>
 					</div>
 				</div>
