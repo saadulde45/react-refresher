@@ -7,6 +7,11 @@ import CandidateTable from '../candidate-table/candidate-table';
 import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
 import moment from 'moment';
 import _ from 'underscore';
+import paginationFactory from 'react-bootstrap-table2-paginator';
+import overlayFactory from 'react-bootstrap-table2-overlay';
+import timer, { scoreValidation } from '../common/utility';
+import Field from '../common/Field';
+import Button from '../common/Button';
 
 const mapStateToProps = function (store) {
 	return { candidates: store.candidatesRed.candidates }
@@ -50,8 +55,8 @@ class App extends Component {
 			}
 		}
 
-		const candidateName = (cell, rowData, rowIdx, extraFormatData) => {
-			return (<span className='candidateName'>{rowData.name}</span>);
+		const candidateName = (cell, rowData) => {
+			return (<Field className="candidateName" text={rowData.name} />);
 		};
 
 		const columnFormatter = (cell, rowData, rowIdx, extraFormatData) => {
@@ -60,17 +65,17 @@ class App extends Component {
 				switch (extraFormatData.columnField) {
 					case "score":
 						if (rowData.testDetails.score !== null) {
-							return (<span className="score_style">{rowData.testDetails.score}</span>);
+							return (<Field className="score_style" text={rowData.testDetails.score} />);
 						} else {
-							return "Enter score";
+							return (<Field text="Enter score" />);
 						}
 					case "status":
 						if (rowData.testDetails.score === null) {
-							return (<span className='na-style'>NA</span>);
+							return (<Field className="na-style" text="NA" />);
 						} else if (rowData.testDetails.score < 3) {
-							return (<span className='rejected'><i className="fas fa-times-circle"></i> Rejected</span>);
+							return (<Field className="rejected" text="Rejected" renderTextAfterChild="false"><i className="fas fa-times-circle"></i></Field>);
 						} else {
-							return (<span className='selected'><i className="fas fa-check-circle"></i> Selected</span>);
+							return (<Field className="selected" text="Selected" renderTextAfterChild="false"><i className="fas fa-times-circle"></i></Field>);
 						}
 					default: break;
 				};
@@ -82,21 +87,25 @@ class App extends Component {
 						if (rowData.testDetails.score >= 3) {
 							if (rowData.l1Details.startTime.length === 0) {
 								return (
-									<button className="btn btn-primary btn-sm"
+									<Button
+										className="btn btn-primary btn-sm"
+										text="Schedule L1"
 										onClick={() => { startInterview(extraFormatData, rowData.l1Details.score, rowData.emailId) }}
-									>Schedule L1</button>
+									/>
 								);
 							} else if (rowData.l1Details.startTime.length !== 0 && rowData.l1Details.endTime.length === 0) {
 								return (
-									<button className="btn btn-success btn-sm"
+									<Button
+										className="btn btn-primary btn-sm"
+										text="Finish Interview"
 										onClick={() => { startInterview(extraFormatData, rowData.l1Details.score, rowData.emailId) }}
-									>Finish Interview</button>
+									/>
 								);
 							} else {
-								return (<span className="score_style">{rowData.l1Details.score}</span>);
+								return (<Field className="score_style" text={rowData.l1Details.score} />);
 							}
 						} else {
-							return (<span className='na-style'>NA</span>);
+							return (<Field className="na-style" text="NA" />);
 						}
 					case "status":
 
@@ -104,19 +113,25 @@ class App extends Component {
 
 							if (rowData.l1Details.startTime.length !== 0 && rowData.l1Details.endTime.length === 0) {
 								return (
-									<span><span className="small">Started at</span><br /> <i className="far fa-clock"></i> {moment(rowData.l1Details.startTime).format("HH:mm:ss")}</span>
+									<Field className="small" text="Started at">
+										<br /> <i className="far fa-clock"></i> {moment(rowData.l1Details.startTime).format("HH:mm:ss")}
+									</Field>
 								);
 							} else if (rowData.l1Details.score >= 3) {
 								return (
-									<span>
-										<span className="small">Selected in </span><br /> <i className="far fa-clock"></i> {timer(rowData.l1Details.startTime, rowData.l1Details.endTime)} mins
-                            		</span>
+									<Field className="small" text="Selected in">
+										<br /> <i className="far fa-clock"></i> {timer(rowData.l1Details.startTime, rowData.l1Details.endTime)} mins
+									</Field>
 								);
 							} else {
-								return (<span className='rejected'><i className="fas fa-times-circle"></i> Rejected</span>);
+								return (
+									<Field className="small" text="Rejected in">
+										<br /> <i className="far fa-clock"></i> {timer(rowData.l1Details.startTime, rowData.l1Details.endTime)} mins
+									</Field>
+								);
 							}
 						} else {
-							return (<span className='na-style'>NA</span>);
+							return (<Field className="na-style" text="NA" />);
 						}
 					default: break;
 				}
@@ -129,40 +144,50 @@ class App extends Component {
 						if (rowData.l1Details.score >= 3) {
 							if (rowData.gkDetails.startTime.length === 0) {
 								return (
-									<button className="btn btn-primary btn-sm"
+									<Button
+										className="btn btn-primary btn-sm"
+										text="Schedule GK"
 										onClick={() => { startInterview(extraFormatData, rowData.gkDetails.score, rowData.emailId) }}
-									>Schedule GK</button>
+									/>
 								);
 							} else if (rowData.gkDetails.startTime.length !== 0 && rowData.gkDetails.endTime.length === 0) {
 								return (
-									<button className="btn btn-success btn-sm"
+									<Button
+										className="btn btn-primary btn-sm"
+										text="Finish Interview"
 										onClick={() => { startInterview(extraFormatData, rowData.gkDetails.score, rowData.emailId) }}
-									>Finish Interview</button>
+									/>
 								);
 							} else {
-								return (<span className="score_style">{rowData.gkDetails.score}</span>);
+								return (<Field className="score_style" text={rowData.gkDetails.score} />);
 							}
 						} else {
-							return (<span className='na-style'>NA</span>);
+							return (<Field className="na-style" text="NA" />);
 						}
 					case "status":
 						if (rowData.l1Details.score >= 3 && rowData.gkDetails.score !== null) {
 
 							if (rowData.gkDetails.startTime.length !== 0 && rowData.gkDetails.endTime.length === 0) {
 								return (
-									<span><span className="small">Started at</span><br /> <i className="far fa-clock"></i> {moment(rowData.gkDetails.startTime).format("HH:mm:ss")}</span>
+									<Field className="small" text="Started at">
+										<br /> <i className="far fa-clock"></i> {moment(rowData.gkDetails.startTime).format("HH:mm:ss")}
+									</Field>
 								);
 							} else if (rowData.gkDetails.score >= 3) {
 								return (
-									<span>
-										<span className="small">Selected in </span><br /> <i className="far fa-clock"></i> {timer(rowData.gkDetails.startTime, rowData.gkDetails.endTime)} mins
-								</span>
+									<Field className="small" text="Selected in">
+										<br /> <i className="far fa-clock"></i> {timer(rowData.gkDetails.startTime, rowData.gkDetails.endTime)} mins
+									</Field>
 								);
 							} else {
-								return (<span className='rejected'><i className="fas fa-times-circle"></i> Rejected</span>);
+								return (
+									<Field className="small" text="Rejected in">
+										<br /> <i className="far fa-clock"></i> {timer(rowData.gkDetails.startTime, rowData.gkDetails.endTime)} mins
+									</Field>
+								);
 							}
 						} else {
-							return (<span className='na-style'>NA</span>);
+							return (<Field className="na-style" text="NA" />);
 						}
 					default: break;
 				}
@@ -175,64 +200,48 @@ class App extends Component {
 						if (rowData.testDetails.score !== null) {
 							if (rowData.testDetails.score < 3) {
 								//test reject
-								return (<span className="score_style">Test Rejected</span>);
+								return (<Field className="score_style" text="Test Rejected" />);
 							} else {
 								//test selected
 								if (rowData.l1Details.score !== null) {
-									if (rowData.testDetails.score < 3) {
+									if (rowData.l1Details.score === 0) {
+										//l1 in progress
+										return (<Field className="score_style" text="L1 In Progress" />);
+									} else if (rowData.testDetails.score < 3 && rowData.l1Details.endTime.length !== 0) {
 										//l1 reject
-										return (<span className="score_style">L1 Rejected</span>);
+										return (<Field className="score_style" text="L1 Rejected" />);
 									} else {
 										// l1 selected
 										if (rowData.gkDetails.score !== null) {
-											if (rowData.gkDetails.score < 3) {
+											if (rowData.gkDetails.score === 0) {
+												//gk in progress
+												return (<Field className="score_style" text="GK In Progress" />);
+											} else if (rowData.gkDetails.score < 3 && rowData.gkDetails.endTime.length !== 0) {
 												//gk reject
-												return (<span className="score_style">GK Rejected</span>);
+												return (<Field className="score_style" text="GK Rejected" />);
 											} else if (rowData.gkDetails.score !== null) {
 												// gk selected
-												return (<span className="score_style">GK Selected</span>);
+												return (<Field className="score_style" text="GK Selected" />);
 											}
 										}
-										return (<span className="score_style">L1 Selected</span>);
+										return (<Field className="score_style" text="L1 Selected" />);
 									}
 								}
-								return (<span className="score_style">Test Selected</span>);
+								return (<Field className="score_style" text="Test Selected" />);
 							}
 						} else {
-							return (<span className='score_style na-style'>NA</span>);
+							return (<Field className="score_style na-style" text="NA" />);
 						}
 					case 'seniority':
 						if (!rowData.gkDetails.score || rowData.gkDetails.score < 3) {
-							return (<span className='score_style na-style'>NA</span>);
+							return (<Field className="score_style na-style" text="NA" />);
 						} else {
-							return (<span className='score_style'>{rowData.finalResult.seniority}</span>);
+							return (<Field className="score_style" text={rowData.finalResult.seniority} />);
 						}
 					default: break;
 				}
 			}
 		};
-
-		function timer(startTime, endTime) {
-			let start = new moment(startTime);
-			let end = new moment();
-
-			if (endTime !== null && endTime.length !== 0) {
-				end = new moment(endTime);
-			}
-
-			return end.diff(start, "minutes");
-		}
-
-		const scoreValidation = (newValue, row, column) => {
-			if (isNaN(newValue) || newValue < 1 || newValue > 5) {
-				return {
-					valid: false,
-					message: 'The value should be number and in the range of 1 - 5'
-				};
-			} else {
-				return true;
-			}
-		}
 
 		this.handleTableChange = this.handleTableChange.bind(this);
 
@@ -357,7 +366,7 @@ class App extends Component {
 		{ text: '40', value: 40 },
 		{ text: '50', value: 50 }]
 		//pagination constant options...
-		this.paginationOptions = {
+		this.paginationOptions = paginationFactory({
 			paginationSize: 10,
 			pageStartIndex: 1,
 			firstPageText: 'First',
@@ -365,18 +374,15 @@ class App extends Component {
 			nextPageText: '>',
 			lastPageText: '<',
 			sizePerPageList: sizePerPageListOptions
-		}
+		});
 
 		this.state = {
 			loading: true,
 			mobile: false
 		};
 
-		this.noDataText = () => {
-			if (!this.state.loading && this.state.length === 0) {
-				return (<div>sorry no data </div>);
-			}
-		}
+		this.overlay = overlayFactory({ spinner: true, background: 'rgba(192,192,192,0.3)' })
+
 	}
 
 	handleTableChange(eventType, { cellEdit, data }) {
@@ -430,9 +436,9 @@ class App extends Component {
 									return (<div className="noData">Sorry no Data</div>);
 								}
 							}}
+							overlay={this.overlay}
 							mobile={this.state.mobile}
 							paginationOptions={this.paginationOptions}
-
 							filter={filterFactory()}
 						/>
 					</div>

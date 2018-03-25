@@ -81,10 +81,16 @@ h1 {
 
 .rejected {
     color: #d20000;
+    .fas {
+        padding-right: 5px;
+    }
 }
 
 .selected {
     color: #2f6a00;
+    .fas {
+        padding-right: 5px;
+    }
 }
 
 @media only screen and (max-width: 1024px) {
