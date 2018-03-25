@@ -371,6 +371,12 @@ class App extends Component {
 			loading: true,
 			mobile: false
 		};
+
+		this.noDataText = () => {
+			if (!this.state.loading && this.state.length === 0) {
+				return (<div>sorry no data </div>);
+			}
+		}
 	}
 
 	handleTableChange(eventType, { cellEdit, data }) {
@@ -419,8 +425,14 @@ class App extends Component {
 							loading={this.state.loading}
 							onTableChange={this.handleTableChange}
 							defaultSorted={this.defaultSorted}
+							noDataIndication={() => {
+								if (!this.state.loading && this.state.data.length === 0) {
+									return (<div className="noData">Sorry no Data</div>);
+								}
+							}}
 							mobile={this.state.mobile}
 							paginationOptions={this.paginationOptions}
+
 							filter={filterFactory()}
 						/>
 					</div>
