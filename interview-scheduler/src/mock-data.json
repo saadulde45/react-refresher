@@ -13,31 +13,6 @@
       "testDetails": {
         "startTime": "2018-03-16 11:50:00",
         "endTime": "2018-03-16 12:50:00",
-        "score": 3
-      },
-      "l1Details": {
-        "startTime": "",
-        "endTime": "",
-        "score": null
-      },
-      "gkDetails": {
-        "startTime": "2018-03-16 11:50:00",
-        "endTime": "",
-        "score": null
-      },
-      "finalResult": {
-        "status": "Test Rejects",
-        "seniority": "SR"
-      }
-    },
-    {
-      "name": "Liam",
-      "resumeLink": "https://docs.google.com/spreadsheets/d/1vIVhF90yya4XFKEMu1EMyKnSScbe-qus8F1-Tub0awE/edit#gid=0",
-      "emailId": "Liam@gmail.com",
-      "experience": 2.5,
-      "testDetails": {
-        "startTime": "2018-03-11 11:50:00",
-        "endTime": "2018-03-11 12:50:00",
         "score": 2
       },
       "l1Details": {
@@ -51,8 +26,33 @@
         "score": null
       },
       "finalResult": {
-        "status": "Test Rejects",
-        "seniority": "SR"
+        "status": "Test Rejected",
+        "seniority": ""
+      }
+    },
+    {
+      "name": "Liam",
+      "resumeLink": "https://docs.google.com/spreadsheets/d/1vIVhF90yya4XFKEMu1EMyKnSScbe-qus8F1-Tub0awE/edit#gid=0",
+      "emailId": "Liam@gmail.com",
+      "experience": 2.5,
+      "testDetails": {
+        "startTime": "2018-03-11 11:50:00",
+        "endTime": "2018-03-11 12:50:00",
+        "score": 3
+      },
+      "l1Details": {
+        "startTime": "",
+        "endTime": "",
+        "score": null
+      },
+      "gkDetails": {
+        "startTime": "",
+        "endTime": "",
+        "score": null
+      },
+      "finalResult": {
+        "status": "",
+        "seniority": ""
       }
     },
     {
@@ -76,8 +76,8 @@
         "score": null
       },
       "finalResult": {
-        "status": "Test Rejects",
-        "seniority": "SR"
+        "status": "",
+        "seniority": ""
       }
     },
     {
@@ -92,8 +92,8 @@
       },
       "l1Details": {
         "startTime": "2018-03-13 10:50:00",
-        "endTime": "2018-03-13 12:50:00",
-        "score": 2.7
+        "endTime": "",
+        "score": 0
       },
       "gkDetails": {
         "startTime": "",
@@ -143,16 +143,16 @@
       "l1Details": {
         "startTime": "2018-03-19 16:50:00",
         "endTime": "2018-03-19 17:50:00",
-        "score": 3
+        "score": 2
       },
       "gkDetails": {
-        "startTime": "2018-03-21 10:50:00",
-        "endTime": "2018-03-21 11:50:00",
-        "score": 3
+        "startTime": "",
+        "endTime": "",
+        "score": null
       },
       "finalResult": {
-        "status": "Test Rejects",
-        "seniority": "SR"
+        "status": "L1 Reject",
+        "seniority": ""
       }
     },
     {
@@ -172,12 +172,12 @@
       },
       "gkDetails": {
         "startTime": "2018-03-18 11:50:00",
-        "endTime": "2018-03-18 12:50:00",
-        "score": 2.5
+        "endTime": "",
+        "score": 0
       },
       "finalResult": {
-        "status": "Test Rejects",
-        "seniority": "SR"
+        "status": "",
+        "seniority": ""
       }
     },
     {
@@ -191,18 +191,18 @@
         "score": 5
       },
       "l1Details": {
-        "startTime": "",
-        "endTime": "",
-        "score": null
+        "startTime": "2018-03-16 13:50:00",
+        "endTime": "2018-03-16 14:50:00",
+        "score": 3
       },
       "gkDetails": {
-        "startTime": "",
-        "endTime": "",
-        "score": null
+        "startTime": "2018-03-16 15:00:00",
+        "endTime": "2018-03-16 17:00:00",
+        "score": 2
       },
       "finalResult": {
-        "status": "Test Rejects",
-        "seniority": "SR"
+        "status": "GK Reject",
+        "seniority": ""
       }
     },
     {
@@ -211,23 +211,23 @@
       "emailId": "Benjamin@gmail.com",
       "experience": 10,
       "testDetails": {
-        "startTime": "2018-03-16 11:50:00",
-        "endTime": "2018-03-16 12:50:00",
-        "score": 5
+        "startTime": "",
+        "endTime": "",
+        "score": null
       },
       "l1Details": {
-        "startTime": "2018-03-20 10:50:00",
-        "endTime": "2018-03-20 12:50:00",
-        "score": 5
+        "startTime": "",
+        "endTime": "",
+        "score": null
       },
       "gkDetails": {
-        "startTime": "2018-03-22 12:50:00",
-        "endTime": "2018-03-22 14:50:00",
-        "score": 5
+        "startTime": "",
+        "endTime": "",
+        "score": null
       },
       "finalResult": {
         "status": "",
-        "seniority": "TD"
+        "seniority": ""
       }
     },
     {
@@ -268,16 +268,16 @@
       "l1Details": {
         "startTime": "2018-03-18 21:50:00",
         "endTime": "",
-        "score": 3
+        "score": 0
       },
       "gkDetails": {
-        "startTime": "2018-03-16 11:50:00",
+        "startTime": "",
         "endTime": "",
-        "score": 3
+        "score": null
       },
       "finalResult": {
-        "status": "Test Rejects",
-        "seniority": "SR"
+        "status": "",
+        "seniority": ""
       }
     },
     {
@@ -298,11 +298,11 @@
       "gkDetails": {
         "startTime": "2018-03-16 11:50:00",
         "endTime": "",
-        "score": 3
+        "score": 0
       },
       "finalResult": {
-        "status": "Test Rejects",
-        "seniority": "SR"
+        "status": "",
+        "seniority": ""
       }
     },
     {
@@ -323,11 +323,11 @@
       "gkDetails": {
         "startTime": "2018-03-16 11:50:00",
         "endTime": "",
-        "score": 3
+        "score": 0
       },
       "finalResult": {
-        "status": "Test Rejects",
-        "seniority": "SR"
+        "status": "",
+        "seniority": ""
       }
     },
     {
@@ -351,7 +351,7 @@
         "score": null
       },
       "finalResult": {
-        "status": "",
+        "status": "Test Rejected",
         "seniority": ""
       }
     },
@@ -401,8 +401,8 @@
         "score": null
       },
       "finalResult": {
-        "status": "Test Rejects",
-        "seniority": "SR"
+        "status": "",
+        "seniority": ""
       }
     },
     {
@@ -421,12 +421,12 @@
         "score": 3
       },
       "gkDetails": {
-        "startTime": "2018-03-16 11:50:00",
-        "endTime": "",
+        "startTime": "2018-03-17 11:50:00",
+        "endTime": "2018-03-17 13:50:00",
         "score": 3
       },
       "finalResult": {
-        "status": "Test Rejects",
+        "status": "GK Selected",
         "seniority": "SR"
       }
     },
@@ -446,13 +446,13 @@
         "score": 3
       },
       "gkDetails": {
-        "startTime": "2018-03-16 11:50:00",
+        "startTime": "",
         "endTime": "",
-        "score": 3
+        "score": null
       },
       "finalResult": {
-        "status": "Test Rejects",
-        "seniority": "SR"
+        "status": "",
+        "seniority": ""
       }
     },
     {
@@ -476,7 +476,7 @@
         "score": null
       },
       "finalResult": {
-        "status": "",
+        "status": "Test Rejected",
         "seniority": ""
       }
     },
