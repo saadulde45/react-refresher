@@ -26,8 +26,6 @@ class App extends Component {
 
 		const startInterview = (column, scoreValue, id) => {
 
-			console.log("interview", scoreValue);
-
 			let updatedData = this.state.data.map(row => {
 				if (row.emailId === id) {
 					if (scoreValue === null) {
@@ -68,9 +66,9 @@ class App extends Component {
 						if (rowData.testDetails.score === null) {
 							return (<span className='na-style'>NA</span>);
 						} else if (rowData.testDetails.score < 3) {
-							return ( <span className='rejected'><i class="fas fa-times-circle"></i> Rejected</span> );;
+							return ( <span className='rejected'><i className="fas fa-times-circle"></i> Rejected</span> );;
 						} else {
-							return ( <span className='selected'><i class="fas fa-check-circle"></i> Selected</span> );;
+							return ( <span className='selected'><i className="fas fa-check-circle"></i> Selected</span> );;
 						}
 					default : break;	
 				};
@@ -97,21 +95,21 @@ class App extends Component {
 							return (<span className='na-style'>NA</span>);
 						}
 					case "status":
-						console.log("score", rowData.l1Details.score);
+						
 						if (rowData.testDetails.score >= 3 && rowData.l1Details.score !== null) {
 
 							if (rowData.l1Details.startTime.length !== 0 && rowData.l1Details.endTime.length === 0) {
 								return (
-									<span><span className="small">Started at</span><br/> <i class="far fa-clock"></i> {moment(rowData.l1Details.startTime).format("HH:mm:ss")}</span>
+									<span><span className="small">Started at</span><br/> <i className="far fa-clock"></i> {moment(rowData.l1Details.startTime).format("HH:mm:ss")}</span>
 								);
 							} else if (rowData.l1Details.score >= 3) {
 								return (
 									<span>
-										<span className="small">Selected in </span><br/> <i class="far fa-clock"></i> {timer(rowData.l1Details.startTime, rowData.l1Details.endTime)} mins
+										<span className="small">Selected in </span><br/> <i className="far fa-clock"></i> {timer(rowData.l1Details.startTime, rowData.l1Details.endTime)} mins
                             		</span>
 								);
 							} else {
-								return (<span className='rejected'><i class="fas fa-times-circle"></i> Rejected</span>);
+								return (<span className='rejected'><i className="fas fa-times-circle"></i> Rejected</span>);
 							}
 						} else {
 							return (<span className='na-style'>NA</span>);
@@ -142,11 +140,11 @@ class App extends Component {
 									return (
 										<span>
 											<span className="small">Selected in</span><br/>
-											<i class="far fa-clock"></i> {timer(rowData.gkDetails.startTime, rowData.gkDetails.endTime)} mins
+											<i className="far fa-clock"></i> {timer(rowData.gkDetails.startTime, rowData.gkDetails.endTime)} mins
                                   		</span>
 									);
 								} else {
-									return (<span className='rejected'><i class="fas fa-times-circle"></i>  Rejected</span>);
+									return (<span className='rejected'><i className="fas fa-times-circle"></i>  Rejected</span>);
 								}
 							} else {
 								return (<span className='na-style'>NA</span>);
@@ -361,18 +359,10 @@ class App extends Component {
 	handleTableChange(eventType, { cellEdit, data }) {
 
 		if (eventType === 'cellEdit') {
-
-			let dataField = cellEdit.dataField.split('.');
-			let newData = data.map(row => {
-				if (row.emailId === cellEdit.rowId) {
-					if (cellEdit.dataField) {
-						row[dataField[0]][dataField[1]] = cellEdit.newValue;
-					}
-				}
-				return row;
+			this.props.updateTestScore({
+				cellEdit: cellEdit,
+				data: data
 			});
-
-			this.props.updateTestScore(newData);
 		}
 	}
 
