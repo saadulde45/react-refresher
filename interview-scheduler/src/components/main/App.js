@@ -199,30 +199,18 @@ class App extends Component {
 								return (<span className="score_style">Test Selected</span>);
 							}
 						} else {
-							return (<span className='na-style'>NA</span>);
+							return (<span className='score_style na-style'>NA</span>);
 						}
 					case 'seniority':
-						if (!rowData.gkDetails.score) {
-							return (<span className='na-style'>NA</span>);
+						if (!rowData.gkDetails.score || rowData.gkDetails.score < 3) {
+							return (<span className='score_style na-style'>NA</span>);
 						} else {
-							return (<span>{rowData.finalResult.seniority}</span>);
+							return (<span className='score_style'>{rowData.finalResult.seniority}</span>);
 						}
 					default: break;
 				}
 			}
 		};
-
-		function updateCellBackground(cellValue) {
-			if (cellValue === 0 || cellValue === null) {
-				//return '#f0f0f0'
-			} else if (cellValue < 3) {
-				//return '#ffdada'
-			} else if (cellValue >= 3 && cellValue <= 5) {
-				//return '#e6ffc4'
-			} else {
-				//return '#FF7F50'
-			}
-		}
 
 		function timer(startTime, endTime) {
 			let start = new moment(startTime);
@@ -246,47 +234,6 @@ class App extends Component {
 			}
 		}
 
-		const cellStyles = (content, rowData, rowIndex, colIndex) => {
-			let score = 0;
-			switch (colIndex) {
-
-				case 2:
-				case 3:
-					if (rowData.testDetails.score === null) {
-						score = 0;
-					} else {
-						score = rowData.testDetails.score;
-					}
-					return {
-						backgroundColor: updateCellBackground(score)
-					};
-
-				case 4:
-				case 5:
-					if (rowData.testDetails.score < 3 || rowData.l1Details.score === null) {
-						score = 0;
-					} else {
-						score = rowData.l1Details.score;
-					}
-					return {
-						backgroundColor: updateCellBackground(score)
-					};
-
-				case 6:
-				case 7:
-					if (rowData.testDetails.score < 3 || rowData.l1Details.score < 3 || rowData.gkDetails.score === null) {
-						score = 0;
-					} else {
-						score = rowData.gkDetails.score;
-					}
-					return {
-						backgroundColor: updateCellBackground(score)
-					};
-
-				default: break;
-			}
-		}
-
 		this.handleTableChange = this.handleTableChange.bind(this);
 
 		this.columns = [{
@@ -306,7 +253,6 @@ class App extends Component {
 			dataField: 'testDetails.score',
 			text: 'Test Score',
 			sort: true,
-			style: cellStyles,
 			validator: scoreValidation,
 			editCellClasses: (cell, row, rowIndex, colIndex) => {
 				return (cell < 1 || cell > 5) ? 'has-error' : 'has-success';
@@ -322,7 +268,6 @@ class App extends Component {
 			dataField: 'testDetails.startTime',
 			text: 'Test Status',
 			sort: true,
-			style: cellStyles,
 			editable: false,
 			formatter: columnFormatter,
 			formatExtraData: {
@@ -333,7 +278,6 @@ class App extends Component {
 			dataField: 'l1Details.score',
 			text: 'L1 Score',
 			sort: true,
-			style: cellStyles,
 			validator: scoreValidation,
 			editable: (content, rowData) => {
 				return rowData.testDetails.score >= 3;
@@ -347,7 +291,6 @@ class App extends Component {
 			dataField: 'l1Details.startTime',
 			text: 'L1 Status',
 			sort: true,
-			style: cellStyles,
 			editable: false,
 			formatter: columnFormatter,
 			formatExtraData: {
@@ -358,7 +301,6 @@ class App extends Component {
 			dataField: 'gkDetails.score',
 			text: 'GK Score',
 			sort: true,
-			style: cellStyles,
 			validator: scoreValidation,
 			editable: (content, rowData, rowIndex, columnIndex) => {
 				return rowData.l1Details.score !== "NA" && rowData.testDetails.score >= 3
@@ -373,7 +315,6 @@ class App extends Component {
 			dataField: 'gkDetails.startTime',
 			text: 'GK Status',
 			sort: true,
-			style: cellStyles,
 			editable: false,
 			formatter: columnFormatter,
 			formatExtraData: {
@@ -384,7 +325,6 @@ class App extends Component {
 			dataField: 'finalResult.status',
 			text: 'Final Status',
 			sort: true,
-			style: cellStyles,
 			editable: false,
 			formatter: columnFormatter,
 			formatExtraData: {
@@ -395,7 +335,6 @@ class App extends Component {
 			dataField: 'finalResult.seniority',
 			text: 'Seniority',
 			sort: true,
-			style: cellStyles,
 			editable: (content, rowData) => {
 				return rowData.gkDetails.score >= 3;
 			},

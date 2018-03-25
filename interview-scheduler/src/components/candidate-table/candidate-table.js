@@ -25,6 +25,8 @@ const CandidateTable = (props) => {
             cellEdit={cellEdit}
             loading={loading}
             onTableChange={onTableChange}
+            striped
+            hover
             noDataIndication={() => {
                 if (!loading && data.length === 0) {
                     return (<div>sorry no data </div>);

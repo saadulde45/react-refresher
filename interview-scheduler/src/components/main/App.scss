@@ -1,5 +1,14 @@
+@mixin font() {
+    font-family: 'Roboto', sans-serif !important;
+    font-weight: normal;
+}
+
+
 body {
-    font-family: 'Roboto', sans-serif;
+    button, input, optgroup, select, textarea {
+        @include font();
+    }
+    @include font();
     font-size: 100%;
     color: #000;
     line-height: 1.0em;
@@ -18,7 +27,7 @@ body, table, td, tr, div, input, form, textarea, select {
         border: solid 1px #ccc;
         margin-top: 20px;
         margin-bottom: 20px;
-        min-width: 1280px;
+        min-width: 1375px;
     }
 }
 
@@ -26,6 +35,13 @@ table.table {
     &.table-bordered {
         th {
             background: #f0f0f0;
+            text-transform: uppercase;
+            padding: 8px 5px 8px 5px;
+            .text-filter {
+                padding: 5px;
+            }
+            text-align: center;
+            vertical-align: middle;
         }
 
         td {
@@ -43,15 +59,15 @@ table.table {
 }
 
 .score_style {
-    font-weight: 400;
-    font-size: 15px;
+    font-weight: 500;
+    font-size: 14px;
 }
 
 h1 {
     &.heading {
         font-family: 'Roboto', sans-serif;
         font-size: 36px;
-        font-weight: 900;
+        font-weight: 300;
         color: #004bbc;
     }
 }

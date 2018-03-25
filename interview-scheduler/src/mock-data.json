@@ -26,7 +26,7 @@
         "score": null
       },
       "finalResult": {
-        "status": "Test Rejected",
+        "status": "",
         "seniority": ""
       }
     },
@@ -151,7 +151,7 @@
         "score": null
       },
       "finalResult": {
-        "status": "L1 Reject",
+        "status": "",
         "seniority": ""
       }
     },
@@ -201,7 +201,7 @@
         "score": 2
       },
       "finalResult": {
-        "status": "GK Reject",
+        "status": "",
         "seniority": ""
       }
     },
@@ -476,7 +476,7 @@
         "score": null
       },
       "finalResult": {
-        "status": "Test Rejected",
+        "status": "",
         "seniority": ""
       }
     },
