@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import './App.scss';
 import { bindActionCreators } from 'redux';
-import getCandidates, { updateTestScore } from "../../actions/actions";
+import getCandidates, { updateTestScore, updateL1Score, updateL1Status, updateGKScore, updateGKStatus } from "../../actions/actions";
 import CandidateTable from '../candidate-table/candidate-table';
 import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
 import moment from 'moment';
@@ -20,7 +20,11 @@ const mapStateToProps = function (store) {
 function mapDispatchToProps(dispatch) {
 	return bindActionCreators({
 		getCandidates: getCandidates,
-		updateTestScore: updateTestScore
+		updateTestScore: updateTestScore,
+		updateL1Score: updateL1Score,
+		updateL1Status: updateL1Status,
+		updateGKScore: updateGKScore,
+		updateGKStatus: updateGKStatus
 	}, dispatch);
 }
 
@@ -29,7 +33,7 @@ class App extends Component {
 	constructor(props) {
 		super(props);
 
-		const startInterview = (column, scoreValue, id) => {
+		const startStopInterview = (column, scoreValue, id) => {
 
 			let updatedData = this.state.data.map(row => {
 				if (row.emailId === id) {
@@ -51,7 +55,12 @@ class App extends Component {
 					},
 					data: updatedData
 				}
-				this.handleTableChange("cellEdit", temp);
+
+				if (column.columnType === "l1Details") {
+					this.props.updateL1Status(temp);
+				} else {
+					this.props.updateGKStatus(temp);
+				}
 			}
 		}
 
@@ -90,7 +99,7 @@ class App extends Component {
 									<Button
 										className="btn btn-primary btn-sm"
 										text="Schedule L1"
-										onClick={() => { startInterview(extraFormatData, rowData.l1Details.score, rowData.emailId) }}
+										onClick={() => { startStopInterview(extraFormatData, rowData.l1Details.score, rowData.emailId) }}
 									/>
 								);
 							} else if (rowData.l1Details.startTime.length !== 0 && rowData.l1Details.endTime.length === 0) {
@@ -98,7 +107,7 @@ class App extends Component {
 									<Button
 										className="btn btn-primary btn-sm"
 										text="Finish Interview"
-										onClick={() => { startInterview(extraFormatData, rowData.l1Details.score, rowData.emailId) }}
+										onClick={() => { startStopInterview(extraFormatData, rowData.l1Details.score, rowData.emailId) }}
 									/>
 								);
 							} else {
@@ -147,7 +156,7 @@ class App extends Component {
 									<Button
 										className="btn btn-primary btn-sm"
 										text="Schedule GK"
-										onClick={() => { startInterview(extraFormatData, rowData.gkDetails.score, rowData.emailId) }}
+										onClick={() => { startStopInterview(extraFormatData, rowData.gkDetails.score, rowData.emailId) }}
 									/>
 								);
 							} else if (rowData.gkDetails.startTime.length !== 0 && rowData.gkDetails.endTime.length === 0) {
@@ -155,7 +164,7 @@ class App extends Component {
 									<Button
 										className="btn btn-primary btn-sm"
 										text="Finish Interview"
-										onClick={() => { startInterview(extraFormatData, rowData.gkDetails.score, rowData.emailId) }}
+										onClick={() => { startStopInterview(extraFormatData, rowData.gkDetails.score, rowData.emailId) }}
 									/>
 								);
 							} else {
@@ -388,10 +397,26 @@ class App extends Component {
 	handleTableChange(eventType, { cellEdit, data }) {
 
 		if (eventType === 'cellEdit') {
-			this.props.updateTestScore({
-				cellEdit: cellEdit,
-				data: data
-			});
+			let column = cellEdit.dataField.split(".")[0];
+
+			switch (column) {
+				case "testDetails":
+					this.props.updateTestScore({
+						cellEdit: cellEdit
+					});
+					break;
+				case "l1Details":
+					this.props.updateL1Score({
+						cellEdit: cellEdit
+					});
+					break;
+				case "gkDetails":
+					this.props.updateGKScore({
+						cellEdit: cellEdit
+					});
+					break;
+				default: break;
+			}
 		}
 	}
 

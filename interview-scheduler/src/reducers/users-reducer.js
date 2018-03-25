@@ -10,16 +10,41 @@ const userReducer = (state = {}, action) => {
         case "UPDATE_TEST_SCORE":
             return (
                 Object.assign({}, state, {
-                    "candidates": updateTestScore(action.payload, state)
+                    "candidates": updateData(action.payload, state)
                 })
             );
+        case "UPDATE_L1_SCORE":
+        return (
+            Object.assign({}, state, {
+                "candidates": updateData(action.payload, state)
+            })
+        );
+        case "UPDATE_L1_STATUS":
+        return (
+            Object.assign({}, state, {
+                "candidates": updateData(action.payload, state)
+            })
+        );
+        case "UPDATE_GK_SCORE":
+        return (
+            Object.assign({}, state, {
+                "candidates": updateData(action.payload, state)
+            })
+        );
+        case "UPDATE_GK_STATUS":
+        return (
+            Object.assign({}, state, {
+                "candidates": updateData(action.payload, state)
+            })
+        );
+        
         default:
             return state;
     }
 
 }
 
-function updateTestScore(row, state) {
+function updateData(row, state) {
     let dataField = row.cellEdit.dataField.split('.');
     let newData = state.candidates.map(candidate => {
         if (candidate.emailId === row.cellEdit.rowId) {
