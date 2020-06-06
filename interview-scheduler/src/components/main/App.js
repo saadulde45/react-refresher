@@ -4,7 +4,7 @@ import './App.scss';
 import { bindActionCreators } from 'redux';
 import getCandidates, { updateTestScore, updateL1Score, updateL1Status, updateGKScore, updateGKStatus } from "../../actions/actions";
 import CandidateTable from '../candidate-table/candidate-table';
-import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
+import filterFactory, { textFilter, numberFilter, Comparator } from 'react-bootstrap-table2-filter';
 import moment from 'moment';
 import _ from 'underscore';
 import paginationFactory from 'react-bootstrap-table2-paginator';
@@ -280,11 +280,13 @@ class App extends Component {
 				return (cell < Constants.MIN_SCORE || cell > Constants.MAX_SCORE) ? 'has-error' : 'has-success';
 			},
 			formatter: columnFormatter,
-			formatExtraData: {
+  			formatExtraData: {
 				"columnType": "testDetails",
 				"columnField": "score"
 			},
-			filter: textFilter()
+			filter: numberFilter({
+				defaultValue: { number: Constants.PASS_THRESHOLD, comparator: Comparator.GE },
+			})
 
 		}, {
 			dataField: 'testDetails.startTime',
@@ -308,7 +310,10 @@ class App extends Component {
 			formatExtraData: {
 				"columnType": "l1Details",
 				"columnField": "score"
-			}
+			},
+			filter: numberFilter({
+				defaultValue: { number: Constants.PASS_THRESHOLD, comparator: Comparator.GE }
+			})
 		}, {
 			dataField: 'l1Details.startTime',
 			text: Constants.L1_STATUS,
@@ -332,7 +337,10 @@ class App extends Component {
 			formatExtraData: {
 				"columnType": "gkDetails",
 				"columnField": "score"
-			}
+			},
+			filter: numberFilter({
+				defaultValue: { number: Constants.PASS_THRESHOLD, comparator: Comparator.GE }
+			})
 		}, {
 			dataField: 'gkDetails.startTime',
 			text: Constants.GK_STATUS,
@@ -364,7 +372,8 @@ class App extends Component {
 			formatExtraData: {
 				"columnType": "finalResult",
 				"columnField": "seniority"
-			}
+			},
+			filter: textFilter()
 		}];
 
 		this.defaultSorted = [{
